@@ -1,0 +1,493 @@
+$espacio: #0b1329;
+$estrellas: #dee0bf;
+$pl1: #cd6841;
+$pl2: #4aa5af;
+$pl3: #5985a5;
+$pl31: #869fb8;
+$lente: #081640;
+$franja: #d98e2f;
+$panel: #0a4856;
+$cinto: #d7d6e5;
+$mano: #c11c43;
+
+.universe {
+  background-color: $espacio;
+  width: 100%;
+  height: 100vh;
+  background-color: $espacio;
+  position: absolute;
+  overflow: hidden;
+  z-index: 1;
+
+  .stars,
+  .planets,
+  .astro {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .starswrp {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .stars {
+    animation-name: planeta;
+    animation-duration: 350000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    overflow: hidden;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    article {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: $estrellas;
+    }
+    @for $i from 1 through 800 {
+      article:nth-child(#{$i}) {
+        left: #{random(100) + "%"};
+        top: #{random(100) + "%"};
+        $anchoalto: #{random(5) + px};
+        width: $anchoalto;
+        height: $anchoalto;
+      }
+    }
+  }
+  .planets {
+    animation-name: planeta;
+    animation-duration: 200000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    .pl1 {
+      background: $pl1;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      right: 40%;
+      top: 12%;
+      overflow: hidden;
+      .fr {
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        border: solid 4px #d98e2f;
+        top: -45px;
+        left: -12px;
+      }
+    }
+    .pl2 {
+      width: 79px;
+      height: 34px;
+      position: absolute;
+      right: 20%;
+      transform: rotate(-5deg);
+      top: 41%;
+      animation-name: apl;
+      animation-duration: 10000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      .aro {
+        width: 79px;
+        top: 10px;
+        left: 0;
+        height: 20px;
+        background: rgba(47, 112, 119, 0.8);
+        position: absolute;
+        border-radius: 50%;
+        z-index: 7;
+        .arin {
+          width: 75%;
+          height: 75%;
+          top: 13%;
+          left: 13%;
+          position: absolute;
+          background: $espacio;
+          border-radius: 60%;
+        }
+      }
+      .globo {
+        height: 33px;
+        width: 36px;
+        position: absolute;
+        top: 0;
+        left: 20px;
+        border-radius: 50%;
+        background: $pl2;
+        z-index: 9;
+      }
+      .cutter {
+        width: 36px;
+        overflow: hidden;
+        z-index: 10;
+        position: absolute;
+        height: 5px;
+        left: 20px;
+        top: 10px;
+        line-height: 1;
+        .aro {
+          left: -20px;
+          top: 0;
+          .arin {
+            background: $pl2;
+          }
+        }
+      }
+    }
+    .pl3 {
+      width: 37px;
+      height: 37px;
+      background: $pl3;
+      position: absolute;
+      border-bottom: solid 4px $pl31;
+      border-right: solid 4px $pl31;
+      bottom: 20%;
+      left: 50%;
+      border-radius: 50px;
+    }
+  }
+
+  .astrocont {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s;
+  }
+
+  .astro {
+    width: 116px;
+    height: 150px;
+    position: absolute;
+    left: 50%;
+    transition: all 4s ease-out;
+    top: 20%;
+    animation-name: ast;
+    animation-duration: 50000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    transform: rotate(30deg);
+    cursor: pointer;
+    z-index: 999;
+    &.mov1 {
+      animation-duration: 50000ms;
+      animation: none;
+      left: 10%;
+      top: 5%;
+      transform: rotate(-30deg);
+    }
+    &.mov2 {
+      animation-duration: 50000ms;
+      animation: none;
+      left: 40%;
+      top: 60%;
+      transform: rotate(30deg);
+    }
+    &.mov3 {
+      animation-duration: 50000ms;
+      animation: ast;
+      left: 60%;
+      top: 5%;
+      transform: rotate(30deg);
+    }
+    .cabeza {
+      width: 44px;
+      height: 35px;
+      position: absolute;
+      left: 39px;
+      top: 8px;
+      z-index: 10;
+      .frente {
+        width: 37px;
+        height: 35px;
+        border-radius: 50%;
+        margin-top: 1px;
+        background-color: white;
+      }
+      .oreja {
+        position: absolute;
+        height: 12px;
+        width: 8px;
+        background-color: white;
+        border-radius: 50%;
+        top: 46%;
+        left: -2px;
+        &:nth-child(2) {
+          left: auto;
+          right: 5px;
+        }
+      }
+      .lente {
+        background-color: $lente;
+        width: 24px;
+        height: 14px;
+        position: absolute;
+        top: 14px;
+        left: 7px;
+        .lentin {
+          width: 100%;
+          height: 7px;
+          position: absolute;
+          top: -3px;
+          border-radius: 50%;
+          background-color: $lente;
+          &:last-child {
+            top: auto;
+            bottom: -5px;
+            height: 10px;
+          }
+        }
+      }
+    }
+    .torzo {
+      width: 49px;
+      height: 60px;
+      position: absolute;
+      left: 33px;
+      top: 39px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 2;
+      .ltr,
+      .ctr,
+      .rtr {
+        position: absolute;
+        top: 2px;
+        height: 100%;
+        width: 20px;
+        background: white;
+      }
+      .rtr {
+        right: 0;
+        transform: rotate(-5deg);
+      }
+      .ltr {
+        left: 0;
+        transform: rotate(5deg);
+      }
+      .ctr {
+        width: 60%;
+        left: 20%;
+      }
+      .cinta {
+        transform: rotate(-40deg);
+        width: 7px;
+        height: 34px;
+        position: absolute;
+        z-index: 9;
+        top: 20px;
+        right: 8px;
+        overflow: hidden;
+        .tub {
+          border: solid 3px rgba($panel, 0.08);
+          height: 100%;
+          width: 20px;
+          border-radius: 50%;
+        }
+      }
+      .panel {
+        width: 22px;
+        height: 18px;
+        background: $panel;
+        margin-top: 12px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 2px;
+        border-radius: 1px;
+        border-bottom: solid 1px rgba(black, 0.2);
+        border-right: solid 1px rgba(black, 0.2);
+        .btn {
+          width: 3px;
+          margin-bottom: 2px;
+          height: 3px;
+          background: rgba(white, 0.2);
+        }
+      }
+      .cinto {
+        width: 100%;
+        height: 6px;
+        background: rgba($cinto, 0.6);
+        position: absolute;
+        bottom: 5px;
+        display: flex;
+        align-items: cente;
+        left: 0;
+        justify-content: space-around;
+        .cinint {
+          height: 100%;
+          width: 4px;
+          background: rgba($cinto, 0.9);
+        }
+      }
+    }
+    .bottom {
+      width: 52px;
+      height: 50px;
+      position: absolute;
+      bottom: 3px;
+      left: 32px;
+      z-index: 2;
+      .pierna {
+        width: 25px;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        &:last-child {
+          right: 0;
+          left: auto;
+        }
+        .lp,
+        .cp,
+        .rp {
+          position: absolute;
+          height: 98%;
+          width: 8px;
+          top: 0;
+          background: white;
+        }
+        .cp {
+          left: 8px;
+        }
+        .rp {
+          right: 4px;
+          transform: rotate(5deg);
+        }
+        .lp {
+          transform: rotate(-5deg);
+          left: 3px;
+        }
+        .pie {
+          width: 85%;
+          position: absolute;
+          bottom: 0;
+          left: 6%;
+          height: 10px;
+          background: $panel;
+          border-radius: 60% 60% 9% 9%;
+        }
+      }
+      .gonada {
+        width: 15px;
+        height: 10px;
+        left: 19px;
+        top: 0;
+        position: absolute;
+        z-index: 10;
+        overflow: hidden;
+        .cr {
+          width: 13px;
+          height: 25px;
+          position: absolute;
+          left: 0px;
+          top: 0px;
+          border: solid 3px white;
+          border-radius: 50%;
+        }
+      }
+    }
+    .brazo {
+      width: 18px;
+      height: 62px;
+      position: absolute;
+      top: 26px;
+      left: 16px;
+      z-index: 2;
+      transform: rotate(46deg);
+      &.iz {
+        transform: rotate(-46deg);
+        right: 16px;
+        left: auto;
+        .mano {
+          .dedo {
+            left: auto;
+            right: -1px;
+            transform: rotate(-13deg);
+            top: 1px;
+          }
+        }
+      }
+      .bl {
+        position: absolute;
+        left: 1px;
+        top: 0;
+        background: white;
+        height: 90%;
+        width: 15px;
+        border-radius: 50%;
+      }
+      .mano {
+        width: 70%;
+        height: 15px;
+        background: $mano;
+        position: absolute;
+        bottom: 0;
+        left: 13%;
+        border-radius: 2px 2px 4px 4px;
+        .dedo {
+          position: absolute;
+          width: 4px;
+          height: 7px;
+          background: $mano;
+          left: -1px;
+          border-radius: 3px 12px 14px 14px;
+          transform: rotate(13deg);
+          top: 2px;
+        }
+      }
+    }
+  }
+  .backpack {
+    z-index: 1;
+    width: 53px;
+    height: 70px;
+    background: #d2cfe4;
+    border-radius: 4px;
+    position: absolute;
+    left: 31px;
+    top: 25px;
+  }
+
+  @keyframes planeta {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes ast {
+    0% {
+      transform: rotate(360deg);
+    }
+    50% {
+      transform: rotate(300deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes apl {
+    0% {
+      transform: rotate(-5deg) translateX(0px);
+    }
+    50% {
+      transform: rotate(15deg) translateX(10px);
+    }
+    100% {
+      transform: rotate(-5deg) translateX(0px);
+    }
+  }
+}

@@ -1,0 +1,78 @@
+.diary-page {
+  background: url(../images/bg.svg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.diary {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  width: 100%;
+  max-width: 700px;
+  height: 90vh;
+  overflow: auto;
+  @include acrylic-background-white;
+
+  .wrapper {
+    width: 100%;
+  }
+
+  &-container {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    &__title-container {
+      margin-bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+
+      &_title {
+        font-family: "Courier New";
+        font-weight: bold;
+        color: #000;
+        padding: 0 20px 10px;
+        border-bottom: 2px solid #000;
+      }
+
+      &_logout {
+        &_btn {
+          font-family: "Courier New";
+          font-weight: bold;
+          color: #000;
+          background-color: white;
+          border: 2px solid #000;
+          width: 80px;
+          height: 30px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #000;
+            color: #fff;
+          }
+        }
+      }
+    }
+
+    &__days-container {
+      width: 100%;
+    }
+
+    &_emtry {
+      font-family: "Courier New";
+      font-weight: normal;
+      color: #000;
+      margin: 50px 0;
+    }
+  }
+}

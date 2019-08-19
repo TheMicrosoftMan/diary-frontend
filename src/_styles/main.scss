@@ -1,0 +1,19 @@
+@import "./variables";
+@import "./mixins";
+@import "./universe";
+@import "../containers/Auth/style.scss";
+@import "../containers/Diary/style.scss";
+@import "../components/Day/style.scss";
+@import "../components/Preloader/style.scss";
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
