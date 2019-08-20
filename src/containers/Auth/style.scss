@@ -101,4 +101,14 @@
       }
     }
   }
+
+  @media screen and (max-width: 350px) {
+    .auth-form {
+      margin: 0 10px;
+
+      .container {
+        margin: 30px 7px;
+      }
+    }
+  }
 }
