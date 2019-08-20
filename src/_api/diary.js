@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const server = "http://localhost:3002/api/diary";
+const server = "https://sg-diary.herokuapp.com/api/diary";
 
 export const getDiary = (token, ownerID) => {
   return axios.post(
