@@ -10,13 +10,13 @@
     margin: 10px;
 
     &__date {
-      font-family: "Courier New";
+      font-family: "SegoeUI";
       font-weight: bold;
       color: #000;
     }
 
     &__text {
-      font-family: "Courier New";
+      font-family: "SegoeUI";
       font-weight: normal;
       text-align: justify;
       color: #000;
@@ -25,38 +25,32 @@
       word-wrap: break-word;
 
       &_area {
-        font-family: "Courier New";
-        font-weight: normal;
+        font-family: "SegoeUI";
         text-align: justify;
-        border: none;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 6px 8px;
+        box-sizing: border-box;
+        color: rgb(50, 49, 48);
+        line-height: 17px;
+        text-overflow: ellipsis;
         max-width: 100%;
         width: 100%;
         resize: vertical;
         min-height: 10vh;
         max-height: 50vh;
+        box-shadow: 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.132),
+          0 0.6px 1.8px 0 rgba(0, 0, 0, 0.108);
 
         &:focus,
         &:active {
           outline-style: none;
-          box-shadow: none;
         }
       }
     }
 
     &__save-btn {
-      font-family: "Courier New";
-      font-weight: bold;
-      color: #000;
-      background-color: white;
-      border: 2px solid #000;
-      width: 80px;
-      height: 30px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #000;
-        color: #fff;
-      }
+      @include button-white();
     }
   }
 }
