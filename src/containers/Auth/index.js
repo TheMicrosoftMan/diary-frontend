@@ -41,67 +41,68 @@ class Auth extends React.Component {
       <div className="auth">
         <Universe />
         <div className="auth-form">
-          <div className="auth-form_blur" />
-          {this.state.isLoginFormOpen ? (
-            <div className="container">
-              <h2 className="auth-form__title">Login</h2>
-              <div className="auth-form__inputs">
-                <input
-                  className="auth-form__inputs_input"
-                  placeholder="Email..."
-                  type="email"
-                  ref={this.logEmail}
-                />
-                <input
-                  className="auth-form__inputs_input"
-                  placeholder="Password..."
-                  type="password"
-                  ref={this.logPassword}
-                />
-                <button className="auth-form__button" onClick={this.login}>
-                  Log in
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="container">
-              <h2 className="auth-form__title">Sign up</h2>
-              <div className="auth-form__inputs">
-                <input
-                  className="auth-form__inputs_input"
-                  placeholder="Name..."
-                  type="text"
-                  ref={this.regName}
-                />
-                <input
-                  className="auth-form__inputs_input"
-                  placeholder="Email..."
-                  type="emain"
-                  ref={this.regEmail}
-                />
-                <input
-                  className="auth-form__inputs_input"
-                  placeholder="Password..."
-                  type="password"
-                  ref={this.regPassword}
-                />
-                <button className="auth-form__button" onClick={this.register}>
-                  Sign up
-                </button>
-              </div>
-            </div>
-          )}
-          <p className="auth_error">{this.props.error && this.props.error}</p>
-          <p
-            className="auth_login"
-            onClick={() => {
-              this.setState({
-                isLoginFormOpen: !this.state.isLoginFormOpen
-              });
-            }}
-          >
-            {this.state.isLoginFormOpen ? "Sign up" : "Login"}
-          </p>
+          <div className="container">
+            {this.state.isLoginFormOpen ? (
+              <React.Fragment>
+                <h2 className="auth-form__title">Login</h2>
+                <div className="auth-form__inputs">
+                  <input
+                    className="auth-form__inputs_input"
+                    placeholder="Email..."
+                    type="email"
+                    ref={this.logEmail}
+                  />
+                  <input
+                    className="auth-form__inputs_input"
+                    placeholder="Password..."
+                    type="password"
+                    ref={this.logPassword}
+                  />
+                  <button className="auth-form__button" onClick={this.login}>
+                    Log in
+                  </button>
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <h2 className="auth-form__title">Sign up</h2>
+                <div className="auth-form__inputs">
+                  <input
+                    className="auth-form__inputs_input"
+                    placeholder="Name..."
+                    type="text"
+                    ref={this.regName}
+                  />
+                  <input
+                    className="auth-form__inputs_input"
+                    placeholder="Email..."
+                    type="emain"
+                    ref={this.regEmail}
+                  />
+                  <input
+                    className="auth-form__inputs_input"
+                    placeholder="Password..."
+                    type="password"
+                    ref={this.regPassword}
+                  />
+                  <button className="auth-form__button" onClick={this.register}>
+                    Sign up
+                  </button>
+                </div>
+              </React.Fragment>
+            )}
+            <p className="auth_error">{this.props.error && this.props.error}</p>
+            <p
+              className="auth_login"
+              onClick={() => {
+                this.setState({
+                  isLoginFormOpen: !this.state.isLoginFormOpen
+                });
+              }}
+            >
+              {this.state.isLoginFormOpen ? "Sign up" : "Login"}
+            </p>
+          </div>
         </div>
         {this.props.pending && <Preloader mode="fullscreen" />}
       </div>

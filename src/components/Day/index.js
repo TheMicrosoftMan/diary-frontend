@@ -14,7 +14,7 @@ const Day = props => {
 const NewDay = props => {
   const dayDescription = useRef(null);
   useEffect(() => {
-    dayDescription.current.value = props.initialValue && props.initialValue;
+    dayDescription.current.value = props.initialValue;
   });
 
   return (

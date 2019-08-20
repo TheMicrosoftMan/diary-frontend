@@ -66,7 +66,16 @@ class Diary extends React.Component {
               <div className="diary-container__days-container">
                 <NewDay
                   date={moment().format("DD.MM.YYYY")}
-                  initialValue={this.props.lastSavedDay.day}
+                  initialValue={(() => {
+                    if (this.props.lastSavedDay.day !== undefined) {
+                      return this.props.lastSavedDay.day;
+                    } else {
+                      if (this.props.diary.diary.length === 0) {
+                        return "Hello. It's my first day that I wrote in this diary...";
+                      }
+                      return "";
+                    }
+                  })()}
                   save={text => this.addOrUpdateDay(text)}
                 />
                 {this.props.diary.diary.length &&
