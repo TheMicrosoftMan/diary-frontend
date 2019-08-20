@@ -39,6 +39,22 @@ export const diary = (state = initialState, action) => {
         pending: false
       };
 
+    case diaryConstants.UPDATE_DAY_REQUEST:
+      return {
+        ...state,
+        pending: true
+      };
+    case diaryConstants.UPDATE_DAY_SUCCESS:
+      return {
+        diary: action.payload,
+        pending: false
+      };
+    case diaryConstants.UPDATE_DAY_ERROR:
+      return {
+        ...state,
+        pending: false
+      };
+
     default:
       return {
         ...state

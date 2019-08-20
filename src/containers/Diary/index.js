@@ -3,10 +3,14 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import { userLogout } from "../../_actions/user.actions";
-import { getDiaryAction, addDiaryDay } from "../../_actions/diary.actions";
+import {
+  getDiaryAction,
+  addDiaryDay,
+  updateDiaryDay
+} from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
-import Day from "../../components/Day";
+import { Day, NewDay } from "../../components/Day";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -14,16 +18,23 @@ class Diary extends React.Component {
     moment.locale();
   }
 
-  addNewDay(text) {
-    const date = moment()
-      .format()
-      .toString();
-    this.props.addDiaryDay(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      text,
-      date
-    );
+  addOrUpdateDay(text) {
+    if (this.props.isTodayWrited) {
+      this.props.updateDiaryDay(
+        this.props.user.user.token,
+        this.props.user.user.id,
+        text,
+        this.props.lastSavedDay.dayDate,
+        this.props.lastSavedDay._id
+      );
+    } else {
+      this.props.addDiaryDay(
+        this.props.user.user.token,
+        this.props.user.user.id,
+        text,
+        this.props.now.format().toString()
+      );
+    }
   }
 
   componentDidMount() {
@@ -52,19 +63,19 @@ class Diary extends React.Component {
                   </button>
                 </div>
               </div>
-              {this.props.diary.pending ? (
-                <Preloader mode="mini" />
-              ) : (
-                <div className="diary-container__days-container">
-                  <Day
-                    key={0}
-                    date={moment().format("DD.MM.YYYY")}
-                    emtry
-                    save={text => this.addNewDay(text)}
-                  />
-                  {this.props.diary.diary.length &&
-                  this.props.diary.diary.length > 0 ? (
-                    this.props.diary.diary
+              <div className="diary-container__days-container">
+                <NewDay
+                  date={moment().format("DD.MM.YYYY")}
+                  initialValue={this.props.lastSavedDay.day}
+                  save={text => this.addOrUpdateDay(text)}
+                />
+                {this.props.diary.diary.length &&
+                this.props.diary.diary.length > 0 ? (
+                  <React.Fragment>
+                    {this.props.diary.pending && (
+                      <Preloader mode="mini" style={{ marginBottom: 20 }} />
+                    )}
+                    {this.props.diary.diary
                       .slice(0)
                       .reverse(0)
                       .map(day => {
@@ -76,14 +87,14 @@ class Diary extends React.Component {
                             text={day.day}
                           />
                         );
-                      })
-                  ) : (
-                    <div className="diary-container__days-container_emtry">
-                      Nothings to show...
-                    </div>
-                  )}
-                </div>
-              )}
+                      })}
+                  </React.Fragment>
+                ) : (
+                  <div className="diary-container__days-container_emtry">
+                    Nothings to show...
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -95,12 +106,24 @@ class Diary extends React.Component {
 const mapDispatchToProps = {
   userLogout: userLogout,
   getDiaryAction: getDiaryAction,
-  addDiaryDay: addDiaryDay
+  addDiaryDay: addDiaryDay,
+  updateDiaryDay: updateDiaryDay
 };
 
 const mapStateToProps = state => {
   const { user, diary } = state;
-  return { user, diary };
+
+  const now = moment();
+  let lastSavedDay = {};
+  let isTodayWrited = false;
+
+  if (diary.diary.length > 0) {
+    lastSavedDay = diary.diary[diary.diary.length - 1];
+    const lastDayDate = moment(lastSavedDay.dayDate);
+    isTodayWrited = moment(now).isSame(lastDayDate, "day");
+  }
+
+  return { user, diary, now, lastSavedDay, isTodayWrited };
 };
 
 const connectedDiary = connect(
