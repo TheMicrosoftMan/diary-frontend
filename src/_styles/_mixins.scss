@@ -22,9 +22,10 @@
 
 @mixin button-white() {
   padding: 0 16px;
-  font-family: "SegoeUI";
-  font-size: 14px;
+  font-family: inherit;
   font-weight: 600;
+  font-size: rem(14px);
+  line-height: rem(20px);
   box-sizing: border-box;
   background-color: rgb(255, 255, 255);
   color: rgb(50, 49, 48);

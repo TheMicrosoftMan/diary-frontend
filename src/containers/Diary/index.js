@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import moment from "moment";
+import DayPicker from "react-day-picker";
+import { initializeIcons } from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
 import {
@@ -16,6 +18,21 @@ class Diary extends React.Component {
   constructor(props) {
     super(props);
     moment.locale();
+
+    this.handleDayClick = this.handleDayClick.bind(this);
+
+    this.state = {
+      selectedDate: moment().toDate(),
+      monthSelected: moment().toDate(),
+      modifiers: {
+        hasDay: [
+          moment("19.10.2019", "DD.MM.YYYY").toDate(),
+          moment("17.10.2019", "DD.MM.YYYY").toDate()
+        ]
+      }
+    };
+
+    initializeIcons();
   }
 
   addOrUpdateDay(text) {
@@ -44,6 +61,42 @@ class Diary extends React.Component {
     );
   }
 
+  handleDayClick(day, { selected }) {
+    this.setState({
+      selectedDate: selected ? undefined : day
+    });
+  }
+
+  goToMonth = month => {
+    this.setState({
+      monthSelected: month
+    });
+  };
+
+  navbar(params) {
+    return (
+      <div className="DayPicker-NavBar">
+        <span className="DayPicker-NavBar_month-year">
+          {moment(params.month).format("MMMM YYYY")}
+        </span>
+        <div className="DayPicker-NavBar_btns">
+          <div
+            className="DayPicker-NavBar_btns_goToMonth"
+            onClick={() => this.goToMonth(params.previousMonth)}
+          >
+            <i class="mi mi-UpArrowShiftKey"></i>
+          </div>
+          <div
+            className="DayPicker-NavBar_btns_goToMonth"
+            onClick={() => this.goToMonth(params.nextMonth)}
+          >
+            <i class="mi mi-UpArrowShiftKey mi-flip-vertical"></i>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="diary-page">
@@ -63,46 +116,36 @@ class Diary extends React.Component {
                   </button>
                 </div>
               </div>
-              <div className="diary-container__days-container">
-                <NewDay
-                  date={moment().format("DD.MM.YYYY")}
-                  initialValue={(() => {
-                    if (this.props.lastSavedDay.day !== undefined) {
-                      return this.props.lastSavedDay.day;
-                    } else {
-                      if (this.props.diary.diary.length === 0) {
-                        return "Hello. It's my first day that I wrote in this diary...";
-                      }
-                      return "";
-                    }
-                  })()}
-                  save={text => this.addOrUpdateDay(text)}
-                />
-                {this.props.diary.diary.length &&
-                this.props.diary.diary.length > 0 ? (
-                  <React.Fragment>
-                    {this.props.diary.pending && (
-                      <Preloader mode="mini" style={{ marginBottom: 20 }} />
-                    )}
-                    {this.props.diary.diary
-                      .slice(0)
-                      .reverse(0)
-                      .map(day => {
-                        return (
-                          <Day
-                            key={day._id}
-                            id={day._id}
-                            date={moment(day.dayDate).format("DD.MM.YYYY")}
-                            text={day.day}
-                          />
-                        );
-                      })}
-                  </React.Fragment>
-                ) : (
-                  <div className="diary-container__days-container_emtry">
-                    Nothings to show...
+              <div className="diary-container__main">
+                <div className="diary-container__main_calendar-container">
+                  <div className="DayPicker-container">
+                    <DayPicker
+                      selectedDays={this.state.selectedDate}
+                      month={this.state.monthSelected}
+                      modifiers={this.state.modifiers}
+                      onDayClick={this.handleDayClick}
+                      firstDayOfWeek={1}
+                      captionElement={() => null}
+                      navbarElement={params => this.navbar(params)}
+                    />
                   </div>
-                )}
+                </div>
+                <div className="diary-container__main_new-day-container">
+                  <NewDay
+                    date={moment().format("DD.MM.YYYY")}
+                    initialValue={(() => {
+                      if (this.props.lastSavedDay.day !== undefined) {
+                        return this.props.lastSavedDay.day;
+                      } else {
+                        if (this.props.diary.diary.length === 0) {
+                          return "Hello. It's my first day that I wrote in this diary...";
+                        }
+                        return "";
+                      }
+                    })()}
+                    save={text => this.addOrUpdateDay(text)}
+                  />
+                </div>
               </div>
             </div>
           </div>

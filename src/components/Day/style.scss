@@ -11,14 +11,16 @@
     margin: 10px;
 
     &__date {
-      font-family: "SegoeUI";
-      font-weight: bold;
+      font-weight: 400;
+      font-size: rem(20px);
+      line-height: rem(24px);
       color: #000;
     }
 
     &__text {
-      font-family: "SegoeUI";
-      font-weight: normal;
+      font-weight: 400;
+      font-size: rem(20px);
+      line-height: rem(24px);
       text-align: justify;
       color: #000;
       margin: 10px 0;
@@ -26,14 +28,14 @@
       word-wrap: break-word;
 
       &_area {
-        font-family: "SegoeUI";
+        font-family: inherit;
         text-align: justify;
-        font-size: 14px;
         font-weight: 400;
+        font-size: rem(14px);
+        line-height: rem(20px);
         padding: 6px 8px;
         box-sizing: border-box;
         color: rgb(50, 49, 48);
-        line-height: 17px;
         text-overflow: ellipsis;
         max-width: 100%;
         width: 100%;
