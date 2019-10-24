@@ -67,3 +67,20 @@ export const findDay = (token, ownerID, dayDate) => {
     }
   );
 };
+
+export const findByRange = (token, ownerID, fromDate, toDate) => {
+  return axios.post(
+    `${server}/findFromTo`,
+    {
+      ownerID,
+      fromDate,
+      toDate
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};

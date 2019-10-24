@@ -2,6 +2,7 @@
   background: $background-color;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,6 +106,23 @@
           width: 100%;
         }
       }
+    }
+  }
+}
+
+.diary-notifications-list {
+  position: absolute;
+  bottom: 2vh;
+  left: 2vh;
+
+  &__notify {
+    margin-top: 10px;
+
+    &_logout {
+      color: blue;
+      text-decoration: underline;
+      margin-left: 5px;
+      cursor: pointer;
     }
   }
 }

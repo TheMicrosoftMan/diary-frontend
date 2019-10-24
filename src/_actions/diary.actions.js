@@ -1,5 +1,11 @@
 import { diaryConstants } from "../_constants";
-import { getDiary, addDay, updateDay, findDay } from "../_api/diary";
+import {
+  getDiary,
+  addDay,
+  updateDay,
+  findDay,
+  findByRange
+} from "../_api/diary";
 
 export const getDiaryAction = (token, id) => dispatch => {
   dispatch({ type: diaryConstants.GET_DIARY_REQUEST });
@@ -11,23 +17,33 @@ export const getDiaryAction = (token, id) => dispatch => {
       });
     })
     .catch(err => {
-      console.log(err);
-      dispatch({ type: diaryConstants.GET_DIARY_ERROR });
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.GET_DIARY_ERROR,
+        payload: err.response.data.msg
+      });
     });
 };
 
-export const addDiaryDay = (token, ownerID, text, date) => dispatch => {
+export const addDiaryDay = (token, ownerID, text, date) => (
+  dispatch,
+  getState
+) => {
   dispatch({ type: diaryConstants.ADD_DAY_REQUEST });
   addDay(token, ownerID, text, date)
     .then(data => {
+      const state = getState();
       dispatch({
         type: diaryConstants.ADD_DAY_SUCCESS,
-        payload: data.data
+        payload: [...state.diary.diary, data.data]
       });
     })
     .catch(err => {
-      console.log(err);
-      dispatch({ type: diaryConstants.ADD_DAY_ERROR });
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.ADD_DAY_ERROR,
+        payload: err.response.data.msg
+      });
     });
 };
 
@@ -47,8 +63,11 @@ export const updateDiaryDay = (token, ownerID, text, date, dayID) => (
       });
     })
     .catch(err => {
-      console.log(err);
-      dispatch({ type: diaryConstants.UPDATE_DAY_ERROR });
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.UPDATE_DAY_ERROR,
+        payload: err.response.data.msg
+      });
     });
 };
 
@@ -62,7 +81,28 @@ export const findDayAction = (token, id, dayDate) => dispatch => {
       });
     })
     .catch(err => {
-      console.log(err);
-      dispatch({ type: diaryConstants.GET_DIARY_ERROR });
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.GET_DIARY_ERROR,
+        payload: err.response.data.msg
+      });
+    });
+};
+
+export const findByRangeAction = (token, id, fromDate, toDate) => dispatch => {
+  dispatch({ type: diaryConstants.GET_DIARY_REQUEST });
+  findByRange(token, id, fromDate, toDate)
+    .then(data => {
+      dispatch({
+        type: diaryConstants.GET_DIARY_SUCCESS,
+        payload: data.data || []
+      });
+    })
+    .catch(err => {
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.GET_DIARY_ERROR,
+        payload: err.response.data.msg
+      });
     });
 };

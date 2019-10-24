@@ -1,8 +1,9 @@
 import { diaryConstants } from "../_constants";
 
 const initialState = {
-  diary: null,
-  pending: true
+  diary: [],
+  pending: true,
+  errorMsg: ""
 };
 
 export const diary = (state = initialState, action) => {
@@ -10,49 +11,59 @@ export const diary = (state = initialState, action) => {
     case diaryConstants.GET_DIARY_REQUEST:
       return {
         ...state,
-        pending: true
+        pending: true,
+        errorMsg: ""
       };
     case diaryConstants.GET_DIARY_SUCCESS:
       return {
+        ...state,
         diary: action.payload,
-        pending: false
+        pending: false,
+        errorMsg: ""
       };
     case diaryConstants.GET_DIARY_ERROR:
       return {
         ...state,
-        pending: false
+        pending: false,
+        errorMsg: action.payload
       };
 
     case diaryConstants.ADD_DAY_REQUEST:
       return {
         ...state,
-        pending: true
+        pending: true,
+        errorMsg: ""
       };
     case diaryConstants.ADD_DAY_SUCCESS:
       return {
         diary: action.payload,
-        pending: false
+        pending: false,
+        errorMsg: ""
       };
     case diaryConstants.ADD_DAY_ERROR:
       return {
         ...state,
-        pending: false
+        pending: false,
+        errorMsg: action.payload
       };
 
     case diaryConstants.UPDATE_DAY_REQUEST:
       return {
         ...state,
-        pending: true
+        pending: true,
+        errorMsg: ""
       };
     case diaryConstants.UPDATE_DAY_SUCCESS:
       return {
         diary: action.payload,
-        pending: false
+        pending: false,
+        errorMsg: ""
       };
     case diaryConstants.UPDATE_DAY_ERROR:
       return {
         ...state,
-        pending: false
+        pending: false,
+        errorMsg: action.payload
       };
 
     default:

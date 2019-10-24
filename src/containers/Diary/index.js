@@ -2,14 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import DayPicker from "react-day-picker";
-import { initializeIcons } from "office-ui-fabric-react";
+import {
+  initializeIcons,
+  MessageBar,
+  MessageBarType
+} from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
 import {
   getDiaryAction,
   addDiaryDay,
   updateDiaryDay,
-  findDayAction
+  findDayAction,
+  findByRangeAction
 } from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
@@ -24,13 +29,7 @@ class Diary extends React.Component {
 
     this.state = {
       selectedDate: moment(),
-      monthSelected: moment(),
-      modifiers: {
-        hasDay: [
-          moment("19.10.2019", "DD.MM.YYYY").toDate(),
-          moment("17.10.2019", "DD.MM.YYYY").toDate()
-        ]
-      }
+      monthSelected: moment()
     };
 
     initializeIcons();
@@ -61,34 +60,33 @@ class Diary extends React.Component {
   }
 
   componentDidMount() {
-    this.props.findDayAction(
+    this.props.findByRangeAction(
       this.props.user.user.token,
       this.props.user.user.id,
-      moment(this.state.selectedDate)
-        .format()
-        .toString()
+      this.state.monthSelected.startOf("month").toDate(),
+      this.state.monthSelected.endOf("month").toDate()
     );
   }
 
   handleDayClick(day) {
-    this.setState(
-      {
-        selectedDate: moment(day)
-      },
-      this.props.findDayAction(
-        this.props.user.user.token,
-        this.props.user.user.id,
-        moment(day)
-          .startOf("date")
-          .format("YYYY-MM-DD")
-      )
-    );
+    this.setState({
+      selectedDate: moment(day).startOf("date")
+    });
   }
 
   goToMonth = month => {
-    this.setState({
-      monthSelected: moment(month)
-    });
+    this.setState(
+      {
+        monthSelected: moment(month)
+      },
+      () =>
+        this.props.findByRangeAction(
+          this.props.user.user.token,
+          this.props.user.user.id,
+          this.state.monthSelected.startOf("month").toDate(),
+          this.state.monthSelected.endOf("month").toDate()
+        )
+    );
   };
 
   navbar(params) {
@@ -102,13 +100,13 @@ class Diary extends React.Component {
             className="DayPicker-NavBar_btns_goToMonth"
             onClick={() => this.goToMonth(params.previousMonth)}
           >
-            <i class="mi mi-UpArrowShiftKey"></i>
+            <i className="mi mi-UpArrowShiftKey"></i>
           </div>
           <div
             className="DayPicker-NavBar_btns_goToMonth"
             onClick={() => this.goToMonth(params.nextMonth)}
           >
-            <i class="mi mi-UpArrowShiftKey mi-flip-vertical"></i>
+            <i className="mi mi-UpArrowShiftKey mi-flip-vertical"></i>
           </div>
         </div>
       </div>
@@ -140,7 +138,11 @@ class Diary extends React.Component {
                     <DayPicker
                       selectedDays={this.state.selectedDate.toDate()}
                       month={this.state.monthSelected.toDate()}
-                      modifiers={this.state.modifiers}
+                      modifiers={{
+                        hasDay: this.props.diary.diary.map(diaryItem => {
+                          return moment(diaryItem.dayDate).toDate();
+                        })
+                      }}
                       onDayClick={this.handleDayClick}
                       firstDayOfWeek={1}
                       captionElement={() => null}
@@ -154,19 +156,47 @@ class Diary extends React.Component {
                     initialValue="Hello. It's my first day that I wrote in this diary..."
                     save={text => this.addDay(text)}
                   />
-                  {this.props.diary.diary && (
-                    <Day
-                      date={moment(this.props.diary.diary.dayDate).format(
-                        "DD.MM.YYYY"
-                      )}
-                      text={this.props.diary.diary.day}
-                    />
-                  )}
+                  {(() => {
+                    const item = this.props.diary.diary.find(diaryItem => {
+                      let firstDate = moment(diaryItem.dayDate).startOf("date");
+                      let secondDate = this.state.selectedDate;
+
+                      if (moment(firstDate).isSame(secondDate)) return true;
+                      return false;
+                    });
+
+                    return (
+                      item && (
+                        <Day
+                          date={moment(item.dayDate).format("DD.MM.YYYY")}
+                          text={item.day}
+                        />
+                      )
+                    );
+                  })()}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {this.props.diary.errorMsg && (
+          <div className="diary-notifications-list">
+            <div className="diary-notifications-list__notify">
+              <MessageBar
+                messageBarType={MessageBarType.error}
+                isMultiline={false}
+              >
+                {this.props.diary.errorMsg}
+                <span
+                  className="diary-notifications-list__notify_logout"
+                  onClick={this.props.userLogout}
+                >
+                  Logout
+                </span>
+              </MessageBar>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -177,7 +207,8 @@ const mapDispatchToProps = {
   getDiaryAction: getDiaryAction,
   addDiaryDay: addDiaryDay,
   updateDiaryDay: updateDiaryDay,
-  findDayAction: findDayAction
+  findDayAction: findDayAction,
+  findByRangeAction: findByRangeAction
 };
 
 const mapStateToProps = state => {
