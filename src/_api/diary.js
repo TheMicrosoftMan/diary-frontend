@@ -51,3 +51,19 @@ export const updateDay = (token, ownerID, text, date, dayID) => {
     }
   );
 };
+
+export const findDay = (token, ownerID, dayDate) => {
+  return axios.post(
+    `${server}/find`,
+    {
+      ownerID: ownerID,
+      dayDate: dayDate
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};

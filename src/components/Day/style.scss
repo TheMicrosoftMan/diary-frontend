@@ -11,19 +11,19 @@
     margin: 10px;
 
     &__date {
-      font-weight: 400;
-      font-size: rem(20px);
-      line-height: rem(24px);
+      font-weight: 600;
+      font-size: rem(14px);
+      line-height: rem(20px);
       color: #000;
     }
 
     &__text {
       font-weight: 400;
-      font-size: rem(20px);
-      line-height: rem(24px);
+      font-size: rem(14px);
+      line-height: rem(20px);
       text-align: justify;
       color: #000;
-      margin: 10px 0;
+      margin: 7px 0;
       max-width: 100%;
       word-wrap: break-word;
 

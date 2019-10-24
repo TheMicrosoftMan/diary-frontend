@@ -1,7 +1,7 @@
 import { diaryConstants } from "../_constants";
 
 const initialState = {
-  diary: [],
+  diary: null,
   pending: true
 };
 
@@ -30,7 +30,7 @@ export const diary = (state = initialState, action) => {
       };
     case diaryConstants.ADD_DAY_SUCCESS:
       return {
-        diary: [...state.diary, action.payload],
+        diary: action.payload,
         pending: false
       };
     case diaryConstants.ADD_DAY_ERROR:

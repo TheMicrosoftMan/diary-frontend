@@ -1,5 +1,5 @@
 import { diaryConstants } from "../_constants";
-import { getDiary, addDay, updateDay } from "../_api/diary";
+import { getDiary, addDay, updateDay, findDay } from "../_api/diary";
 
 export const getDiaryAction = (token, id) => dispatch => {
   dispatch({ type: diaryConstants.GET_DIARY_REQUEST });
@@ -49,5 +49,20 @@ export const updateDiaryDay = (token, ownerID, text, date, dayID) => (
     .catch(err => {
       console.log(err);
       dispatch({ type: diaryConstants.UPDATE_DAY_ERROR });
+    });
+};
+
+export const findDayAction = (token, id, dayDate) => dispatch => {
+  dispatch({ type: diaryConstants.GET_DIARY_REQUEST });
+  findDay(token, id, dayDate)
+    .then(data => {
+      dispatch({
+        type: diaryConstants.GET_DIARY_SUCCESS,
+        payload: data.data[0] || null
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: diaryConstants.GET_DIARY_ERROR });
     });
 };

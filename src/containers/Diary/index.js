@@ -8,7 +8,8 @@ import { userLogout } from "../../_actions/user.actions";
 import {
   getDiaryAction,
   addDiaryDay,
-  updateDiaryDay
+  updateDiaryDay,
+  findDayAction
 } from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
@@ -22,8 +23,8 @@ class Diary extends React.Component {
     this.handleDayClick = this.handleDayClick.bind(this);
 
     this.state = {
-      selectedDate: moment().toDate(),
-      monthSelected: moment().toDate(),
+      selectedDate: moment(),
+      monthSelected: moment(),
       modifiers: {
         hasDay: [
           moment("19.10.2019", "DD.MM.YYYY").toDate(),
@@ -45,31 +46,48 @@ class Diary extends React.Component {
         this.props.lastSavedDay._id
       );
     } else {
-      this.props.addDiaryDay(
-        this.props.user.user.token,
-        this.props.user.user.id,
-        text,
-        this.props.now.format().toString()
-      );
     }
   }
 
-  componentDidMount() {
-    this.props.getDiaryAction(
+  addDay(text) {
+    this.props.addDiaryDay(
       this.props.user.user.token,
-      this.props.user.user.id
+      this.props.user.user.id,
+      text,
+      moment(this.state.selectedDate)
+        .startOf("date")
+        .format("YYYY-MM-DD")
     );
   }
 
-  handleDayClick(day, { selected }) {
-    this.setState({
-      selectedDate: selected ? undefined : day
-    });
+  componentDidMount() {
+    this.props.findDayAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      moment(this.state.selectedDate)
+        .format()
+        .toString()
+    );
+  }
+
+  handleDayClick(day) {
+    this.setState(
+      {
+        selectedDate: moment(day)
+      },
+      this.props.findDayAction(
+        this.props.user.user.token,
+        this.props.user.user.id,
+        moment(day)
+          .startOf("date")
+          .format("YYYY-MM-DD")
+      )
+    );
   }
 
   goToMonth = month => {
     this.setState({
-      monthSelected: month
+      monthSelected: moment(month)
     });
   };
 
@@ -120,8 +138,8 @@ class Diary extends React.Component {
                 <div className="diary-container__main_calendar-container">
                   <div className="DayPicker-container">
                     <DayPicker
-                      selectedDays={this.state.selectedDate}
-                      month={this.state.monthSelected}
+                      selectedDays={this.state.selectedDate.toDate()}
+                      month={this.state.monthSelected.toDate()}
                       modifiers={this.state.modifiers}
                       onDayClick={this.handleDayClick}
                       firstDayOfWeek={1}
@@ -132,19 +150,18 @@ class Diary extends React.Component {
                 </div>
                 <div className="diary-container__main_new-day-container">
                   <NewDay
-                    date={moment().format("DD.MM.YYYY")}
-                    initialValue={(() => {
-                      if (this.props.lastSavedDay.day !== undefined) {
-                        return this.props.lastSavedDay.day;
-                      } else {
-                        if (this.props.diary.diary.length === 0) {
-                          return "Hello. It's my first day that I wrote in this diary...";
-                        }
-                        return "";
-                      }
-                    })()}
-                    save={text => this.addOrUpdateDay(text)}
+                    date={moment(this.state.selectedDate).format("DD.MM.YYYY")}
+                    initialValue="Hello. It's my first day that I wrote in this diary..."
+                    save={text => this.addDay(text)}
                   />
+                  {this.props.diary.diary && (
+                    <Day
+                      date={moment(this.props.diary.diary.dayDate).format(
+                        "DD.MM.YYYY"
+                      )}
+                      text={this.props.diary.diary.day}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -159,23 +176,14 @@ const mapDispatchToProps = {
   userLogout: userLogout,
   getDiaryAction: getDiaryAction,
   addDiaryDay: addDiaryDay,
-  updateDiaryDay: updateDiaryDay
+  updateDiaryDay: updateDiaryDay,
+  findDayAction: findDayAction
 };
 
 const mapStateToProps = state => {
   const { user, diary } = state;
 
-  const now = moment();
-  let lastSavedDay = {};
-  let isTodayWrited = false;
-
-  if (diary.diary.length > 0) {
-    lastSavedDay = diary.diary[diary.diary.length - 1];
-    const lastDayDate = moment(lastSavedDay.dayDate);
-    isTodayWrited = moment(now).isSame(lastDayDate, "day");
-  }
-
-  return { user, diary, now, lastSavedDay, isTodayWrited };
+  return { user, diary };
 };
 
 const connectedDiary = connect(
