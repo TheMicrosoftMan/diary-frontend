@@ -1,11 +1,14 @@
+@import "~sass-rem";
 @import "./variables";
 @import "./fonts";
 @import "./mixins";
+@import "./micon.min";
 @import "./universe";
 @import "../containers/Auth/style.scss";
 @import "../containers/Diary/style.scss";
 @import "../components/Day/style.scss";
 @import "../components/Preloader/style.scss";
+@import "./calendar";
 
 * {
   padding: 0;
@@ -17,4 +20,6 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
+    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
 }
