@@ -2,6 +2,7 @@ import { diaryConstants } from "../_constants";
 
 const initialState = {
   diary: [],
+  foundDays: [],
   pending: true,
   errorMsg: ""
 };
@@ -17,6 +18,7 @@ export const diary = (state = initialState, action) => {
     case diaryConstants.GET_DIARY_SUCCESS:
       return {
         ...state,
+        foundDays: [],
         diary: action.payload,
         pending: false,
         errorMsg: ""
@@ -31,6 +33,7 @@ export const diary = (state = initialState, action) => {
     case diaryConstants.ADD_DAY_REQUEST:
       return {
         ...state,
+        foundDays: [],
         pending: true,
         errorMsg: ""
       };
@@ -62,6 +65,34 @@ export const diary = (state = initialState, action) => {
     case diaryConstants.UPDATE_DAY_ERROR:
       return {
         ...state,
+        pending: false,
+        errorMsg: action.payload
+      };
+    case diaryConstants.FOUND_DAYS_REQUEST:
+      return {
+        ...state,
+        foundDays: [],
+        pending: true,
+        errorMsg: ""
+      };
+    case diaryConstants.FOUND_DAYS_SUCCESS:
+      return {
+        ...state,
+        foundDays: action.payload,
+        pending: false,
+        errorMsg: ""
+      };
+    case diaryConstants.FOUND_DAYS_ERROR:
+      return {
+        ...state,
+        foundDays: [],
+        pending: false,
+        errorMsg: action.payload
+      };
+    case diaryConstants.FOUND_DAYS_CLEAR:
+      return {
+        ...state,
+        foundDays: [],
         pending: false,
         errorMsg: action.payload
       };

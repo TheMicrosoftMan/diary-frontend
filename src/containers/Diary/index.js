@@ -7,7 +7,8 @@ import {
   MessageBar,
   MessageBarType,
   IconButton,
-  MaskedTextField
+  MaskedTextField,
+  SearchBox
 } from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
@@ -16,11 +17,13 @@ import {
   addDiaryDay,
   updateDiaryDay,
   findDayAction,
-  findByRangeAction
+  findByRangeAction,
+  findByTextAction,
+  clearFindedResults
 } from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
-import { Day, NewDay } from "../../components/Day";
+import { Day, NewDay, MiniDay } from "../../components/Day";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -30,8 +33,8 @@ class Diary extends React.Component {
     this.handleDayClick = this.handleDayClick.bind(this);
 
     this.state = {
-      selectedDate: moment(),
-      monthSelected: moment(),
+      selectedDate: moment().startOf("date"),
+      monthSelected: moment().startOf("month"),
 
       showMaskedTextField: false
     };
@@ -63,6 +66,15 @@ class Diary extends React.Component {
     );
   }
 
+  findByRange = () => {
+    this.props.findByRangeAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      this.state.monthSelected.startOf("month").toDate(),
+      this.state.monthSelected.endOf("month").toDate()
+    );
+  };
+
   componentDidMount() {
     this.props.findByRangeAction(
       this.props.user.user.token,
@@ -83,21 +95,26 @@ class Diary extends React.Component {
       {
         monthSelected: moment(month)
       },
-      () =>
-        this.props.findByRangeAction(
-          this.props.user.user.token,
-          this.props.user.user.id,
-          this.state.monthSelected.startOf("month").toDate(),
-          this.state.monthSelected.endOf("month").toDate()
-        )
+      this.findByRange
     );
   };
 
   goToToday = () => {
-    this.setState({
-      selectedDate: moment(),
-      monthSelected: moment()
-    });
+    this.setState(
+      {
+        selectedDate: moment().startOf("date"),
+        monthSelected: moment().startOf("date")
+      },
+      this.findByRange
+    );
+  };
+
+  searchByText = text => {
+    this.props.findByTextAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      text
+    );
   };
 
   navbar(params) {
@@ -206,6 +223,41 @@ class Diary extends React.Component {
                       navbarElement={params => this.navbar(params)}
                     />
                   </div>
+                  <div className="find-text-block">
+                    <div className="search-panel">
+                      <div className="search-panel__container">
+                        <div className="search-panel__container_item">
+                          <SearchBox
+                            placeholder="Search by text"
+                            onSearch={text => this.searchByText(text)}
+                            onClear={this.props.clearFindedResults}
+                          />
+                        </div>
+                      </div>
+                      {this.props.diary.foundDays &&
+                        this.props.diary.foundDays.length > 0 && (
+                          <div className="finded-list">
+                            <span className="finded-list__title">
+                              Finded days {this.props.diary.foundDays.length}:
+                            </span>
+                            {this.props.diary.foundDays.map(findedDay => {
+                              return (
+                                <MiniDay
+                                  key={findedDay._id}
+                                  date={moment(findedDay.dayDate).format(
+                                    "DD.MM.YYYY"
+                                  )}
+                                  text={findedDay.day}
+                                  onClick={() =>
+                                    this.handleDayClick(findedDay.dayDate)
+                                  }
+                                />
+                              );
+                            })}
+                          </div>
+                        )}
+                    </div>
+                  </div>
                 </div>
                 <div className="diary-container__main_new-day-container">
                   <NewDay
@@ -265,7 +317,9 @@ const mapDispatchToProps = {
   addDiaryDay: addDiaryDay,
   updateDiaryDay: updateDiaryDay,
   findDayAction: findDayAction,
-  findByRangeAction: findByRangeAction
+  findByRangeAction: findByRangeAction,
+  findByTextAction: findByTextAction,
+  clearFindedResults: clearFindedResults
 };
 
 const mapStateToProps = state => {

@@ -84,6 +84,37 @@
             }
           }
         }
+
+        .find-text-block {
+          width: 100%;
+
+          .search-panel {
+            width: 100%;
+            margin-bottom: 10px;
+
+            &__container_item {
+              width: 100%;
+
+              .ms-SearchBox {
+                width: 100%;
+              }
+            }
+          }
+
+          .finded-list {
+            display: flex;
+            flex-direction: column;
+            margin: 0 10px;
+
+            .finded-list__title {
+              font-weight: 600;
+              font-size: rem(24px);
+              line-height: rem(28px);
+              color: #323130;
+              margin-bottom: 15px;
+            }
+          }
+        }
       }
 
       &_emtry {
