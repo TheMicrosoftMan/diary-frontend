@@ -39,4 +39,19 @@ const NewDay = props => {
   );
 };
 
-export { Day, NewDay };
+const MiniDay = props => {
+  return (
+    <div className="day mini-day" onClick={props.onClick}>
+      <div className="day-container">
+        <span className="day-container__date">{props.date}</span>
+        <div className="day-container__text">
+          {props.text.length < 140
+            ? props.text
+            : `${props.text.slice(0, 140)}...`}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export { Day, NewDay, MiniDay };

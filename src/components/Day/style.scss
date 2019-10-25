@@ -3,10 +3,6 @@
   width: 100%;
   margin-bottom: 20px;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-
   &-container {
     margin: 10px;
 
@@ -55,5 +51,14 @@
     &__save-btn {
       @include button-white();
     }
+  }
+}
+
+.mini-day {
+  transition-duration: 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid #6e6e6e;
   }
 }

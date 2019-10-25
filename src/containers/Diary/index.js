@@ -5,7 +5,10 @@ import DayPicker from "react-day-picker";
 import {
   initializeIcons,
   MessageBar,
-  MessageBarType
+  MessageBarType,
+  IconButton,
+  MaskedTextField,
+  SearchBox
 } from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
@@ -14,11 +17,13 @@ import {
   addDiaryDay,
   updateDiaryDay,
   findDayAction,
-  findByRangeAction
+  findByRangeAction,
+  findByTextAction,
+  clearFindedResults
 } from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
-import { Day, NewDay } from "../../components/Day";
+import { Day, NewDay, MiniDay } from "../../components/Day";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -28,8 +33,10 @@ class Diary extends React.Component {
     this.handleDayClick = this.handleDayClick.bind(this);
 
     this.state = {
-      selectedDate: moment(),
-      monthSelected: moment()
+      selectedDate: moment().startOf("date"),
+      monthSelected: moment().startOf("month"),
+
+      showMaskedTextField: false
     };
 
     initializeIcons();
@@ -59,6 +66,15 @@ class Diary extends React.Component {
     );
   }
 
+  findByRange = () => {
+    this.props.findByRangeAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      this.state.monthSelected.startOf("month").toDate(),
+      this.state.monthSelected.endOf("month").toDate()
+    );
+  };
+
   componentDidMount() {
     this.props.findByRangeAction(
       this.props.user.user.token,
@@ -79,13 +95,25 @@ class Diary extends React.Component {
       {
         monthSelected: moment(month)
       },
-      () =>
-        this.props.findByRangeAction(
-          this.props.user.user.token,
-          this.props.user.user.id,
-          this.state.monthSelected.startOf("month").toDate(),
-          this.state.monthSelected.endOf("month").toDate()
-        )
+      this.findByRange
+    );
+  };
+
+  goToToday = () => {
+    this.setState(
+      {
+        selectedDate: moment().startOf("date"),
+        monthSelected: moment().startOf("date")
+      },
+      this.findByRange
+    );
+  };
+
+  searchByText = text => {
+    this.props.findByTextAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      text
     );
   };
 
@@ -134,6 +162,52 @@ class Diary extends React.Component {
               </div>
               <div className="diary-container__main">
                 <div className="diary-container__main_calendar-container">
+                  <div className="search-panel">
+                    <div className="search-panel__container">
+                      <div className="search-panel__container_item">
+                        <IconButton
+                          iconProps={{
+                            iconName: "ForwardEvent"
+                          }}
+                          title="Go to today"
+                          ariaLabel="Go to today"
+                          onClick={this.goToToday}
+                        />
+                      </div>
+                      <div className="search-panel__container_item">
+                        <IconButton
+                          iconProps={{
+                            iconName: "CalendarWorkWeek"
+                          }}
+                          title="Go to date"
+                          ariaLabel="Go to date"
+                          onClick={() =>
+                            this.setState({
+                              showMaskedTextField: !this.state
+                                .showMaskedTextField
+                            })
+                          }
+                        />
+                        {this.state.showMaskedTextField && (
+                          <MaskedTextField
+                            mask="99.99.9999"
+                            onKeyDown={e => {
+                              if (e.keyCode === 13) {
+                                const newDate = moment(
+                                  e.target.value,
+                                  "DD.MM.YYYY"
+                                );
+                                this.setState({
+                                  selectedDate: newDate,
+                                  monthSelected: newDate
+                                });
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="DayPicker-container">
                     <DayPicker
                       selectedDays={this.state.selectedDate.toDate()}
@@ -148,6 +222,41 @@ class Diary extends React.Component {
                       captionElement={() => null}
                       navbarElement={params => this.navbar(params)}
                     />
+                  </div>
+                  <div className="find-text-block">
+                    <div className="search-panel">
+                      <div className="search-panel__container">
+                        <div className="search-panel__container_item">
+                          <SearchBox
+                            placeholder="Search by text"
+                            onSearch={text => this.searchByText(text)}
+                            onClear={this.props.clearFindedResults}
+                          />
+                        </div>
+                      </div>
+                      {this.props.diary.foundDays &&
+                        this.props.diary.foundDays.length > 0 && (
+                          <div className="finded-list">
+                            <span className="finded-list__title">
+                              Finded days {this.props.diary.foundDays.length}:
+                            </span>
+                            {this.props.diary.foundDays.map(findedDay => {
+                              return (
+                                <MiniDay
+                                  key={findedDay._id}
+                                  date={moment(findedDay.dayDate).format(
+                                    "DD.MM.YYYY"
+                                  )}
+                                  text={findedDay.day}
+                                  onClick={() =>
+                                    this.handleDayClick(findedDay.dayDate)
+                                  }
+                                />
+                              );
+                            })}
+                          </div>
+                        )}
+                    </div>
                   </div>
                 </div>
                 <div className="diary-container__main_new-day-container">
@@ -208,7 +317,9 @@ const mapDispatchToProps = {
   addDiaryDay: addDiaryDay,
   updateDiaryDay: updateDiaryDay,
   findDayAction: findDayAction,
-  findByRangeAction: findByRangeAction
+  findByRangeAction: findByRangeAction,
+  findByTextAction: findByTextAction,
+  clearFindedResults: clearFindedResults
 };
 
 const mapStateToProps = state => {
