@@ -4,7 +4,8 @@ import {
   addDay,
   updateDay,
   findDay,
-  findByRange
+  findByRange,
+  findByText
 } from "../_api/diary";
 
 export const getDiaryAction = (token, id) => dispatch => {
@@ -105,4 +106,35 @@ export const findByRangeAction = (token, id, fromDate, toDate) => dispatch => {
         payload: err.response.data.msg
       });
     });
+};
+
+export const findByTextAction = (token, id, text) => dispatch => {
+  dispatch({ type: diaryConstants.FOUND_DAYS_REQUEST });
+  if (text.length > 0) {
+    findByText(token, id, text)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.FOUND_DAYS_SUCCESS,
+          payload: data.data || []
+        });
+      })
+      .catch(err => {
+        console.error(err.response.data.msg);
+        dispatch({
+          type: diaryConstants.FOUND_DAYS_ERROR,
+          payload: err.response.data.msg
+        });
+      });
+  } else {
+    dispatch({
+      type: diaryConstants.FOUND_DAYS_ERROR,
+      payload: "Text length must be > 0"
+    });
+  }
+};
+
+export const clearFindedResults = () => dispatch => {
+  dispatch({
+    type: diaryConstants.FOUND_DAYS_CLEAR
+  });
 };

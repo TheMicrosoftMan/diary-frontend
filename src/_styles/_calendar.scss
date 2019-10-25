@@ -16,6 +16,7 @@
   width: max-content;
   height: max-content;
   @include acrylic-background-white;
+  margin-bottom: 15px;
 }
 
 .DayPicker-wrapper {
@@ -164,14 +165,14 @@
     font-weight: 600;
   }
 
-  &--today {
-    background-color: rgb(0, 120, 212);
-    color: #fff;
+  &--hasDay {
+    color: rgb(0, 120, 212);
     font-weight: 600;
   }
 
-  &--hasDay {
-    color: rgb(0, 120, 212);
+  &--today {
+    background-color: rgb(0, 120, 212);
+    color: #fff;
     font-weight: 600;
   }
 }
