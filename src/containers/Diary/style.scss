@@ -1,7 +1,8 @@
 .diary-page {
-  background: url(../images/bg.svg);
+  background: $background-color;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,11 +40,10 @@
       align-content: center;
 
       &_title {
-        font-family: "SegoeUI";
-        font-size: 24px;
-        color: #323130;
         font-weight: 600;
-        line-height: 1;
+        font-size: rem(24px);
+        line-height: rem(28px);
+        color: #323130;
       }
 
       &_logout {
@@ -53,15 +53,23 @@
       }
     }
 
-    &__days-container {
+    &__main {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       width: 100%;
 
+      &_new-day-container {
+        width: 50%;
+      }
+
+      &_calendar-container {
+        width: 50%;
+
+        .dateSelect {
+          display: flex;
+        }
+      }
+
       &_emtry {
-        font-family: "SegoeUI";
         font-weight: normal;
         color: #000;
         font-weight: bold;
@@ -98,6 +106,23 @@
           width: 100%;
         }
       }
+    }
+  }
+}
+
+.diary-notifications-list {
+  position: absolute;
+  bottom: 2vh;
+  left: 2vh;
+
+  &__notify {
+    margin-top: 10px;
+
+    &_logout {
+      color: blue;
+      text-decoration: underline;
+      margin-left: 5px;
+      cursor: pointer;
     }
   }
 }

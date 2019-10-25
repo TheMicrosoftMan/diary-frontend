@@ -51,3 +51,36 @@ export const updateDay = (token, ownerID, text, date, dayID) => {
     }
   );
 };
+
+export const findDay = (token, ownerID, dayDate) => {
+  return axios.post(
+    `${server}/find`,
+    {
+      ownerID: ownerID,
+      dayDate: dayDate
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};
+
+export const findByRange = (token, ownerID, fromDate, toDate) => {
+  return axios.post(
+    `${server}/findFromTo`,
+    {
+      ownerID,
+      fromDate,
+      toDate
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};

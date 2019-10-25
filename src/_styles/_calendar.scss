@@ -1,0 +1,225 @@
+.DayPicker {
+  width: 100%;
+  display: inline-block;
+  max-width: 220px;
+  margin: 10px 20px;
+
+  *:focus {
+    outline: none;
+  }
+}
+
+.DayPicker-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: max-content;
+  height: max-content;
+  @include acrylic-background-white;
+}
+
+.DayPicker-wrapper {
+  position: relative;
+  flex-direction: row;
+  padding-bottom: 1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.DayPicker-Months {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.DayPicker-Month {
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+}
+
+.DayPicker-NavBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: 400;
+  font-size: rem(20px);
+  line-height: rem(24px);
+
+  &_month-year {
+    margin-left: 2px;
+  }
+
+  &_btns {
+    display: flex;
+
+    &_goToMonth {
+      $size: 28px;
+
+      width: $size;
+      height: $size;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: rgb(50, 49, 48);
+      border-radius: 2px;
+      transition-duration: 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(237, 235, 233);
+        color: #201f1e;
+      }
+    }
+  }
+}
+
+.DayPicker-NavButton--interactionDisabled {
+  display: none;
+}
+
+.DayPicker-Weekdays {
+  display: table-header-group;
+  margin-top: 1em;
+}
+
+.DayPicker-WeekdaysRow {
+  display: table-row;
+}
+
+.DayPicker-Weekday {
+  display: table-cell;
+  padding: 0.5em;
+  color: #8b9898;
+  text-align: center;
+
+  abbr[title] {
+    text-align: justify;
+    font-weight: 400;
+    font-size: rem(14px);
+    line-height: rem(20px);
+    border-bottom: none;
+    text-decoration: none;
+  }
+}
+
+.DayPicker-Body {
+  display: table-row-group;
+}
+
+.DayPicker-Week {
+  display: table-row;
+}
+
+.DayPicker-Day {
+  display: table-cell;
+  padding: 0.5em;
+  vertical-align: middle;
+  cursor: pointer;
+
+  font-weight: 400;
+  font-size: rem(14px);
+  line-height: rem(20px);
+  color: rgb(50, 49, 48);
+  text-align: center;
+  border-radius: 2px;
+  transition-duration: 0.1s;
+
+  &:hover {
+    background-color: rgb(237, 235, 233);
+    color: #201f1e;
+  }
+
+  &--outside {
+    visibility: hidden;
+    cursor: default;
+  }
+
+  &--disabled {
+    color: #dce0e0;
+    cursor: default;
+  }
+
+  &--sunday {
+    background-color: #f7f8f8;
+    &:not(.DayPicker-Day--today) {
+      color: #dce0e0;
+    }
+  }
+
+  &--selected {
+    position: relative;
+
+    background-color: rgb(199, 224, 244);
+    color: #323130;
+    font-weight: 600;
+  }
+
+  &--today {
+    background-color: rgb(0, 120, 212);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  &--hasDay {
+    color: rgb(0, 120, 212);
+    font-weight: 600;
+  }
+}
+
+.DayPicker-WeekNumber {
+  display: table-cell;
+  padding: 0.5em;
+  min-width: 1em;
+  border-right: 1px solid #eaecec;
+  color: #8b9898;
+  vertical-align: middle;
+  text-align: right;
+  font-size: 0.75em;
+  cursor: pointer;
+}
+
+.DayPicker--interactionDisabled {
+  .DayPicker-Day {
+    cursor: default;
+  }
+}
+
+.DayPicker-Footer {
+  padding-top: 0.5em;
+}
+
+.DayPicker-TodayButton {
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  color: #4a90e2;
+  font-size: 0.875em;
+  cursor: pointer;
+}
+
+.DayPickerInput {
+  display: inline-block;
+}
+
+.DayPickerInput-OverlayWrapper {
+  position: relative;
+}
+
+.DayPickerInput-Overlay {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
