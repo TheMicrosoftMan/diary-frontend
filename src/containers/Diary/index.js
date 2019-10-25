@@ -6,7 +6,8 @@ import {
   initializeIcons,
   MessageBar,
   MessageBarType,
-  IconButton
+  IconButton,
+  MaskedTextField
 } from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
@@ -30,7 +31,9 @@ class Diary extends React.Component {
 
     this.state = {
       selectedDate: moment(),
-      monthSelected: moment()
+      monthSelected: moment(),
+
+      showMaskedTextField: false
     };
 
     initializeIcons();
@@ -144,14 +147,48 @@ class Diary extends React.Component {
                 <div className="diary-container__main_calendar-container">
                   <div className="search-panel">
                     <div className="search-panel__container">
-                      <IconButton
-                        iconProps={{
-                          iconName: "ForwardEvent"
-                        }}
-                        title="Go to today"
-                        ariaLabel="Go to today"
-                        onClick={this.goToToday}
-                      />
+                      <div className="search-panel__container_item">
+                        <IconButton
+                          iconProps={{
+                            iconName: "ForwardEvent"
+                          }}
+                          title="Go to today"
+                          ariaLabel="Go to today"
+                          onClick={this.goToToday}
+                        />
+                      </div>
+                      <div className="search-panel__container_item">
+                        <IconButton
+                          iconProps={{
+                            iconName: "CalendarWorkWeek"
+                          }}
+                          title="Go to date"
+                          ariaLabel="Go to date"
+                          onClick={() =>
+                            this.setState({
+                              showMaskedTextField: !this.state
+                                .showMaskedTextField
+                            })
+                          }
+                        />
+                        {this.state.showMaskedTextField && (
+                          <MaskedTextField
+                            mask="99.99.9999"
+                            onKeyDown={e => {
+                              if (e.keyCode === 13) {
+                                const newDate = moment(
+                                  e.target.value,
+                                  "DD.MM.YYYY"
+                                );
+                                this.setState({
+                                  selectedDate: newDate,
+                                  monthSelected: newDate
+                                });
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="DayPicker-container">

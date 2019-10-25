@@ -74,10 +74,11 @@
             align-items: center;
             margin: 10px;
 
-            .ms-Button {
+            &_item {
+              display: flex;
               margin-right: 3px;
 
-              &:first-child {
+              &:last-child {
                 margin: 0;
               }
             }
