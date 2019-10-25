@@ -64,8 +64,24 @@
       &_calendar-container {
         width: 50%;
 
-        .dateSelect {
-          display: flex;
+        .search-panel {
+          @include acrylic-background-white;
+          width: max-content;
+          margin-bottom: 15px;
+
+          &__container {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+
+            .ms-Button {
+              margin-right: 3px;
+
+              &:first-child {
+                margin: 0;
+              }
+            }
+          }
         }
       }
 

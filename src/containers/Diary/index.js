@@ -5,7 +5,8 @@ import DayPicker from "react-day-picker";
 import {
   initializeIcons,
   MessageBar,
-  MessageBarType
+  MessageBarType,
+  IconButton
 } from "office-ui-fabric-react";
 
 import { userLogout } from "../../_actions/user.actions";
@@ -89,6 +90,13 @@ class Diary extends React.Component {
     );
   };
 
+  goToToday = () => {
+    this.setState({
+      selectedDate: moment(),
+      monthSelected: moment()
+    });
+  };
+
   navbar(params) {
     return (
       <div className="DayPicker-NavBar">
@@ -134,6 +142,18 @@ class Diary extends React.Component {
               </div>
               <div className="diary-container__main">
                 <div className="diary-container__main_calendar-container">
+                  <div className="search-panel">
+                    <div className="search-panel__container">
+                      <IconButton
+                        iconProps={{
+                          iconName: "ForwardEvent"
+                        }}
+                        title="Go to today"
+                        ariaLabel="Go to today"
+                        onClick={this.goToToday}
+                      />
+                    </div>
+                  </div>
                   <div className="DayPicker-container">
                     <DayPicker
                       selectedDays={this.state.selectedDate.toDate()}
