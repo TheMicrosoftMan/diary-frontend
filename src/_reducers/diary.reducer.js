@@ -39,6 +39,7 @@ export const diary = (state = initialState, action) => {
       };
     case diaryConstants.ADD_DAY_SUCCESS:
       return {
+        ...state,
         diary: action.payload,
         pending: false,
         errorMsg: ""
@@ -58,6 +59,7 @@ export const diary = (state = initialState, action) => {
       };
     case diaryConstants.UPDATE_DAY_SUCCESS:
       return {
+        ...state,
         diary: action.payload,
         pending: false,
         errorMsg: ""

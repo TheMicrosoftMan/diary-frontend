@@ -1,39 +1,53 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
+import { TextField } from "office-ui-fabric-react";
 
 const Day = props => {
-  return (
-    <div className="day">
-      <div className="day-container">
-        <span className="day-container__date">{props.date}</span>
-        <div className="day-container__text">{props.text}</div>
-      </div>
-    </div>
-  );
-};
-
-const NewDay = props => {
-  const dayDescription = useRef(null);
-  useEffect(() => {
-    dayDescription.current.value = props.initialValue;
-  });
+  const [text, setText] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <div className="day">
       <div className="day-container">
         <span className="day-container__date">{props.date}</span>
-        <div className="day-container__text">
-          <textarea
-            className="day-container__text_area"
-            placeholder="Enter your day..."
-            ref={dayDescription}
-          />
-        </div>
-        <button
-          className="day-container__save-btn"
-          onClick={() => props.save(dayDescription.current.value)}
-        >
-          Save
-        </button>
+        {props.day && (
+          <div
+            className="day-container__text"
+            onClick={() => {
+              setText(props.day.day);
+              setIsEdit(true);
+            }}
+          >
+            {props.day.day}
+          </div>
+        )}
+        {(!props.day || isEdit) && (
+          <React.Fragment>
+            <div className="day-container__text">
+              <TextField
+                className="day-container__text_area"
+                placeholder="Enter your day..."
+                multiline
+                autoAdjustHeight
+                value={text}
+                onChange={e => setText(e.target.value)}
+              />
+            </div>
+            <button
+              className="day-container__btn"
+              onClick={() => props.save(text)}
+            >
+              Save
+            </button>
+            {props.day && (
+              <button
+                className="day-container__btn"
+                onClick={() => setIsEdit(false)}
+              >
+                Cancel
+              </button>
+            )}
+          </React.Fragment>
+        )}
       </div>
     </div>
   );
@@ -54,4 +68,4 @@ const MiniDay = props => {
   );
 };
 
-export { Day, NewDay, MiniDay };
+export { Day, MiniDay };

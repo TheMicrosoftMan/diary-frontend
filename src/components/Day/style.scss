@@ -29,27 +29,25 @@
         font-weight: 400;
         font-size: rem(14px);
         line-height: rem(20px);
-        padding: 6px 8px;
         box-sizing: border-box;
         color: rgb(50, 49, 48);
-        text-overflow: ellipsis;
-        max-width: 100%;
-        width: 100%;
-        resize: vertical;
-        min-height: 10vh;
-        max-height: 50vh;
         box-shadow: 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.132),
           0 0.6px 1.8px 0 rgba(0, 0, 0, 0.108);
 
-        &:focus,
-        &:active {
-          outline-style: none;
+        .ms-TextField-field {
+          min-height: 10vh;
+          resize: vertical;
         }
       }
     }
 
-    &__save-btn {
+    &__btn {
       @include button-white();
+      margin-right: 5px;
+
+      &:last-child {
+        margin: 0;
+      }
     }
   }
 }

@@ -23,7 +23,7 @@ import {
 } from "../../_actions/diary.actions";
 
 import Preloader from "../../components/Preloader";
-import { Day, NewDay, MiniDay } from "../../components/Day";
+import { Day, MiniDay } from "../../components/Day";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -38,19 +38,6 @@ class Diary extends React.Component {
     };
 
     initializeIcons();
-  }
-
-  addOrUpdateDay(text) {
-    if (this.props.isTodayWrited) {
-      this.props.updateDiaryDay(
-        this.props.user.user.token,
-        this.props.user.user.id,
-        text,
-        this.props.lastSavedDay.dayDate,
-        this.props.lastSavedDay._id
-      );
-    } else {
-    }
   }
 
   addDay(text) {
@@ -265,29 +252,17 @@ class Diary extends React.Component {
                   )}
                 </div>
                 <div className="diary-container__main_new-day-container">
-                  <NewDay
-                    date={moment(this.state.selectedDate).format("DD.MM.YYYY")}
-                    initialValue="Hello. It's my first day that I wrote in this diary..."
-                    save={text => this.addDay(text)}
-                  />
-                  {(() => {
-                    const item = this.props.diary.diary.find(diaryItem => {
+                  <Day
+                    date={moment(this.state.selectedDate).format("dddd, DD.MM.YYYY")}
+                    day={this.props.diary.diary.find(diaryItem => {
                       let firstDate = moment(diaryItem.dayDate).startOf("date");
                       let secondDate = this.state.selectedDate;
 
                       if (moment(firstDate).isSame(secondDate)) return true;
                       return false;
-                    });
-
-                    return (
-                      item && (
-                        <Day
-                          date={moment(item.dayDate).format("DD.MM.YYYY")}
-                          text={item.day}
-                        />
-                      )
-                    );
-                  })()}
+                    })}
+                    save={text => this.addDay(text)}
+                  />
                 </div>
               </div>
             </div>
