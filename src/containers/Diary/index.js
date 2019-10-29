@@ -34,11 +34,21 @@ class Diary extends React.Component {
 
     this.state = {
       selectedDate: moment().startOf("date"),
-      monthSelected: moment().startOf("month")
+      monthSelected: moment().startOf("month"),
+
+      showSidebar: true
     };
+
+    window.addEventListener("resize", this.windowResize);
 
     initializeIcons();
   }
+
+  windowResize = () => {
+    if (window.innerWidth >= 740) {
+      this.setState({ showSidebar: true });
+    }
+  };
 
   addDay(text) {
     this.props.addDiaryDay(
@@ -136,7 +146,6 @@ class Diary extends React.Component {
   }
 
   render() {
-    console.log(this.props.diary.diary)
     return (
       <div className="diary-page">
         <div className="diary">
@@ -155,112 +164,127 @@ class Diary extends React.Component {
                   </button>
                 </div>
               </div>
+
+              <div
+                className="diary-container__toogler"
+                onClick={() =>
+                  this.setState({
+                    showSidebar: !this.state.showSidebar
+                  })
+                }
+              >
+                <i className="mi mi-GlobalNavigationButton"></i>
+              </div>
+
               <div className="diary-container__main">
-                <div className="diary-container__main_calendar-container">
-                  <div className="find-text-block">
-                    <div className="search-panel">
-                      <div className="search-panel__row">
-                        <div className="search-panel__row_item">
-                          <div className="search-panel__row_item_cont">
-                            <SearchBox
-                              placeholder="Search by text"
-                              onSearch={text => this.searchByText(text)}
-                              onClear={this.props.clearFindedResults}
-                            />
-                          </div>
-                          {this.props.diary.foundDays.length > 0 && (
-                            <div className="finded-list">
-                              <span className="finded-list__title">
-                                Finded days {this.props.diary.foundDays.length}:
-                              </span>
-                              {this.props.diary.foundDays.map(findedDay => {
-                                return (
-                                  <MiniDay
-                                    key={findedDay._id}
-                                    date={moment(findedDay.dayDate).format(
-                                      "DD.MM.YYYY"
-                                    )}
-                                    text={findedDay.day}
-                                    onClick={() =>
-                                      this.handleDayClick(findedDay.dayDate)
-                                    }
-                                  />
-                                );
-                              })}
+                {this.state.showSidebar && (
+                  <div className="diary-container__main_calendar-container">
+                    <div className="find-text-block">
+                      <div className="search-panel">
+                        <div className="search-panel__row">
+                          <div className="search-panel__row_item">
+                            <div className="search-panel__row_item_cont">
+                              <SearchBox
+                                placeholder="Search by text"
+                                onSearch={text => this.searchByText(text)}
+                                onClear={this.props.clearFindedResults}
+                              />
                             </div>
-                          )}
+                            {this.props.diary.foundDays.length > 0 && (
+                              <div className="finded-list">
+                                <span className="finded-list__title">
+                                  Finded days{" "}
+                                  {this.props.diary.foundDays.length}:
+                                </span>
+                                {this.props.diary.foundDays.map(findedDay => {
+                                  return (
+                                    <MiniDay
+                                      key={findedDay._id}
+                                      date={moment(findedDay.dayDate).format(
+                                        "DD.MM.YYYY"
+                                      )}
+                                      text={findedDay.day}
+                                      onClick={() =>
+                                        this.handleDayClick(findedDay.dayDate)
+                                      }
+                                    />
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
+                    {!this.props.diary.foundDays.length > 0 && (
+                      <React.Fragment>
+                        <div className="search-panel">
+                          <div className="search-panel__row">
+                            <div className="DayPicker-container">
+                              <DayPicker
+                                selectedDays={this.state.selectedDate.toDate()}
+                                month={this.state.monthSelected.toDate()}
+                                modifiers={{
+                                  hasDay: this.props.diary.diary.map(
+                                    diaryItem => {
+                                      return moment(diaryItem.dayDate).toDate();
+                                    }
+                                  )
+                                }}
+                                onDayClick={this.handleDayClick}
+                                firstDayOfWeek={1}
+                                captionElement={() => null}
+                                navbarElement={params => this.navbar(params)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="search-panel">
+                          <div className="search-panel__row">
+                            <div className="search-panel__row_item">
+                              <div className="search-panel__row_item_cont">
+                                <IconButton
+                                  iconProps={{
+                                    iconName: "ForwardEvent"
+                                  }}
+                                  title="Go to today"
+                                  ariaLabel="Go to today"
+                                  onClick={this.goToToday}
+                                />
+                              </div>
+                            </div>
+                            <div className="search-panel__row_item">
+                              <div className="search-panel__row_item_cont">
+                                <IconButton
+                                  iconProps={{
+                                    iconName: "CalendarWorkWeek"
+                                  }}
+                                  title="Go to date"
+                                  ariaLabel="Go to date"
+                                />
+                                <MaskedTextField
+                                  mask="99.99.9999"
+                                  onKeyDown={e => {
+                                    if (e.keyCode === 13) {
+                                      const newDate = moment(
+                                        e.target.value,
+                                        "DD.MM.YYYY"
+                                      );
+                                      this.setState({
+                                        selectedDate: newDate,
+                                        monthSelected: newDate
+                                      });
+                                    }
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </React.Fragment>
+                    )}
                   </div>
-                  {!this.props.diary.foundDays.length > 0 && (
-                    <React.Fragment>
-                      <div className="search-panel">
-                        <div className="search-panel__row">
-                          <div className="DayPicker-container">
-                            <DayPicker
-                              selectedDays={this.state.selectedDate.toDate()}
-                              month={this.state.monthSelected.toDate()}
-                              modifiers={{
-                                hasDay: this.props.diary.diary.map(
-                                  diaryItem => {
-                                    return moment(diaryItem.dayDate).toDate();
-                                  }
-                                )
-                              }}
-                              onDayClick={this.handleDayClick}
-                              firstDayOfWeek={1}
-                              captionElement={() => null}
-                              navbarElement={params => this.navbar(params)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="search-panel">
-                        <div className="search-panel__row">
-                          <div className="search-panel__row_item">
-                            <div className="search-panel__row_item_cont">
-                              <IconButton
-                                iconProps={{
-                                  iconName: "ForwardEvent"
-                                }}
-                                title="Go to today"
-                                ariaLabel="Go to today"
-                                onClick={this.goToToday}
-                              />
-                            </div>
-                          </div>
-                          <div className="search-panel__row_item">
-                            <div className="search-panel__row_item_cont">
-                              <IconButton
-                                iconProps={{
-                                  iconName: "CalendarWorkWeek"
-                                }}
-                                title="Go to date"
-                                ariaLabel="Go to date"
-                              />
-                              <MaskedTextField
-                                mask="99.99.9999"
-                                onKeyDown={e => {
-                                  if (e.keyCode === 13) {
-                                    const newDate = moment(
-                                      e.target.value,
-                                      "DD.MM.YYYY"
-                                    );
-                                    this.setState({
-                                      selectedDate: newDate,
-                                      monthSelected: newDate
-                                    });
-                                  }
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  )}
-                </div>
+                )}
                 <div className="diary-container__main_new-day-container">
                   <Day
                     date={moment(this.state.selectedDate).format(

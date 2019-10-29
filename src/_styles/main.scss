@@ -15,11 +15,10 @@
   margin: 0;
 }
 
-.App {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+body {
+  background: $background-color;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
     -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
 }

@@ -1,21 +1,17 @@
 .diary-page {
-  background: $background-color;
-  background-repeat: no-repeat;
-  background-size: cover;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
 }
+
 .diary {
   display: flex;
   justify-content: center;
   margin: 10px;
   width: 100%;
   max-width: 700px;
-  max-height: 90vh;
   overflow: auto;
   @include acrylic-background-white;
 
@@ -31,6 +27,13 @@
     flex-direction: column;
     position: relative;
     scroll-behavior: smooth;
+
+    &__toogler {
+      width: 50px;
+      height: 50px;
+      display: none;
+      cursor: pointer;
+    }
 
     &__title-container {
       margin-bottom: 20px;
@@ -138,37 +141,6 @@
       }
     }
   }
-
-  @media screen and (max-width: 400px) {
-    .diary-container {
-      margin: 20px 7px;
-
-      &__title-container {
-        flex-direction: column;
-
-        &_title {
-          text-align: center;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-
-        &_logout {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 10px;
-        }
-      }
-
-      .day-container {
-        margin: 6px;
-
-        &__save-btn {
-          width: 100%;
-        }
-      }
-    }
-  }
 }
 
 .diary-notifications-list {
@@ -184,6 +156,93 @@
       text-decoration: underline;
       margin-left: 5px;
       cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .diary-container {
+    align-items: flex-start;
+  }
+
+  .diary-container__main {
+    flex-direction: column;
+    position: relative;
+
+    &_calendar-container {
+      @include acrylic-background-white;
+      box-sizing: border-box;
+      padding: 10px;
+      max-width: 100%;
+      margin-bottom: 15px;
+    }
+
+    &_new-day-container {
+      max-width: 100%;
+
+      .day {
+        margin: 0;
+      }
+    }
+  }
+
+  .diary-container__toogler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include acrylic-background-white;
+    font-size: 1.25rem;
+    color: #000;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .diary-container {
+    margin: 20px 7px;
+
+    &__title-container {
+      flex-direction: column;
+
+      &_title {
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      &_logout {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+    }
+
+    .day-container {
+      margin: 6px;
+
+      &__btn {
+        width: 100%;
+        margin-bottom: 3px;
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .diary {
+    margin: 10px 0;
+
+    .diary-container {
+      margin: 10px 0;
+
+      .diary-container__main_calendar-container {
+        padding: 10px 0;
+      }
     }
   }
 }
