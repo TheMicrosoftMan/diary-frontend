@@ -13,10 +13,9 @@
   display: flex;
   justify-content: center;
   align-content: center;
-  width: max-content;
+  width: 100%;
   height: max-content;
   @include acrylic-background-white;
-  margin-bottom: 15px;
 }
 
 .DayPicker-wrapper {
