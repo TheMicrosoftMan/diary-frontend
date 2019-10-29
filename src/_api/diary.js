@@ -34,13 +34,12 @@ export const addDay = (token, ownerID, text, date) => {
   );
 };
 
-export const updateDay = (token, ownerID, text, date, dayID) => {
+export const updateDay = (token, ownerID, text, dayID) => {
   return axios.post(
     `${server}/`,
     {
       ownerID: ownerID,
       day: text,
-      date: date,
       dayID: dayID
     },
     {
