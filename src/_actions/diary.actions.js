@@ -48,19 +48,25 @@ export const addDiaryDay = (token, ownerID, text, date) => (
     });
 };
 
-export const updateDiaryDay = (token, ownerID, text, date, dayID) => (
+export const updateDiaryDay = (token, ownerID, dayID, text) => (
   dispatch,
   getState
 ) => {
   dispatch({ type: diaryConstants.UPDATE_DAY_REQUEST });
-  updateDay(token, ownerID, text, date, dayID)
+  updateDay(token, ownerID, text, dayID)
     .then(data => {
       const state = getState();
       let diaryArr = state.diary.diary;
-      diaryArr[diaryArr.length - 1] = data.data;
+      const newState = diaryArr.map(day => {
+        if (day._id === dayID) {
+          return data.data;
+        }
+
+        return day;
+      });
       dispatch({
         type: diaryConstants.UPDATE_DAY_SUCCESS,
-        payload: diaryArr
+        payload: newState
       });
     })
     .catch(err => {

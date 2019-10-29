@@ -32,19 +32,33 @@ const Day = props => {
                 onChange={e => setText(e.target.value)}
               />
             </div>
-            <button
-              className="day-container__btn"
-              onClick={() => props.save(text)}
-            >
-              Save
-            </button>
-            {props.day && (
-              <button
-                className="day-container__btn"
-                onClick={() => setIsEdit(false)}
-              >
-                Cancel
-              </button>
+            {props.day ? (
+              <React.Fragment>
+                <button
+                  className="day-container__btn"
+                  onClick={() => {
+                    props.edit(props.day._id, text);
+                    setIsEdit(false);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="day-container__btn"
+                  onClick={() => setIsEdit(false)}
+                >
+                  Cancel
+                </button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <button
+                  className="day-container__btn"
+                  onClick={() => props.save(text)}
+                >
+                  Save
+                </button>
+              </React.Fragment>
             )}
           </React.Fragment>
         )}

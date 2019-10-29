@@ -51,6 +51,15 @@ class Diary extends React.Component {
     );
   }
 
+  updateDay(id, text) {
+    this.props.updateDiaryDay(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      id,
+      text
+    );
+  }
+
   findByRange = () => {
     this.props.findByRangeAction(
       this.props.user.user.token,
@@ -127,6 +136,7 @@ class Diary extends React.Component {
   }
 
   render() {
+    console.log(this.props.diary.diary)
     return (
       <div className="diary-page">
         <div className="diary">
@@ -253,7 +263,9 @@ class Diary extends React.Component {
                 </div>
                 <div className="diary-container__main_new-day-container">
                   <Day
-                    date={moment(this.state.selectedDate).format("dddd, DD.MM.YYYY")}
+                    date={moment(this.state.selectedDate).format(
+                      "dddd, DD.MM.YYYY"
+                    )}
                     day={this.props.diary.diary.find(diaryItem => {
                       let firstDate = moment(diaryItem.dayDate).startOf("date");
                       let secondDate = this.state.selectedDate;
@@ -262,6 +274,7 @@ class Diary extends React.Component {
                       return false;
                     })}
                     save={text => this.addDay(text)}
+                    edit={(id, text) => this.updateDay(id, text)}
                   />
                 </div>
               </div>
