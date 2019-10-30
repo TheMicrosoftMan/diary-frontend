@@ -1,5 +1,5 @@
 import { userConstants } from "../_constants";
-import { registerUser, loginUser } from "../_api/user";
+import { registerUser, loginUser, autoLogin } from "../_api/user";
 import { isLoginValid, isRegisterValid } from "../_helpers/validation";
 
 export const userRegister = (name, email, password) => dispatch => {
@@ -59,11 +59,23 @@ export const userLogin = (email, password) => dispatch => {
 };
 
 export const userAutoLogin = () => dispatch => {
-  if (localStorage.getItem("data")) {
-    dispatch({
-      type: userConstants.USER_LOGIN_SUCCESS,
-      payload: JSON.parse(localStorage.getItem("data"))
-    });
+  const storage = JSON.parse(localStorage.getItem("data"));
+  if (storage) {
+    dispatch({ type: userConstants.USER_LOGIN_REQUEST });
+    autoLogin(storage.token, storage.user.id)
+      .then(data => {
+        dispatch({
+          type: userConstants.USER_LOGIN_SUCCESS,
+          payload: storage
+        });
+      })
+      .catch(err => {
+        localStorage.removeItem("data");
+        dispatch({
+          type: userConstants.USER_LOGIN_ERROR,
+          payload: "Token is not valid"
+        });
+      });
   } else {
     dispatch({ type: userConstants.USER_LOGIN_ERROR });
   }
