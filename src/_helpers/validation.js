@@ -2,31 +2,31 @@ import * as yup from "yup";
 
 const loginValidationSchema = yup.object().shape({
   email: yup
-    .string()
-    .required()
-    .email(),
+    .string("You have entered an invalid username or password")
+    .required("Please enter your email")
+    .email("Please enter your email address in format: yourname@example.com"),
   password: yup
-    .string()
-    .required()
-    .min(6)
-    .max(32)
+    .string("You have entered an invalid username or password")
+    .required("Please enter your password")
+    .min(6, "Password is too short")
+    .max(32, "Password is too long")
 });
 
 const registerValidationSchema = yup.object().shape({
   name: yup
-    .string()
-    .required()
-    .min(3)
-    .max(16),
+    .string("Please enter your name")
+    .required("Please enter your name")
+    .min(3, "Name is too short")
+    .max(16, "Name is too long"),
   email: yup
-    .string()
-    .required()
-    .email(),
+    .string("Please enter your email address in format: yourname@example.com")
+    .required("Please enter your email")
+    .email("Please enter your email address in format: yourname@example.com"),
   password: yup
-    .string()
-    .required()
-    .min(6)
-    .max(32)
+    .string("Please enter password")
+    .required("Please enter password")
+    .min(6, "Password is too short")
+    .max(32, "Password is too long")
 });
 
 export const isLoginValid = (email, password) => {

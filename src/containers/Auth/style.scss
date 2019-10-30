@@ -19,18 +19,20 @@
 
     .auth_login {
       position: relative;
-      
+
       text-decoration: underline;
       font-weight: bold;
+      width: max-content;
       margin: 0 10px 10px 0;
-      text-align: right;
       cursor: pointer;
       z-index: 2;
     }
 
     .auth_error {
       position: relative;
-      
+      font-weight: 400;
+      font-size: rem(14px);
+      line-height: rem(20px);
       color: red;
       text-align: center;
       margin: 20px auto;
@@ -40,14 +42,42 @@
     .container {
       display: flex;
       flex-direction: column;
-      
+
       width: 100%;
       margin: 30px;
       z-index: 4;
     }
 
+    &__user-icon {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      $size: 100px;
+      width: $size;
+      height: $size;
+      background-color: #767676;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 3rem;
+    }
+
     &__title {
+      margin-top: 30px;
+      text-align: center;
       z-index: 4;
+    }
+
+    &__label {
+      font-weight: 600;
+      font-size: rem(14px);
+      line-height: rem(20px);
+      color: #000;
+      width: 100%;
+      margin-bottom: 10px;
     }
 
     &__inputs {
@@ -60,13 +90,14 @@
       z-index: 4;
 
       &_input {
-        margin-bottom: 10px;
         background-color: transparent;
+        font-weight: 400;
+        font-size: rem(14px);
+        line-height: rem(20px);
         color: #000;
-        
-        font-size: 16px;
         border: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+        border-radius: 0;
         width: 100%;
         height: 30px;
         box-sizing: border-box;
@@ -83,17 +114,12 @@
     }
 
     &__button {
+      @include button-white();
       margin-top: 15px;
       width: 100%;
       background-color: transparent;
-      color: #000;
-      
-      font-size: 16px;
       border: 1px solid #000;
-      height: 30px;
       z-index: 4;
-      cursor: pointer;
-      transition: all ease-in-out 0.1s;
 
       &:hover {
         background-color: #000;
