@@ -42,22 +42,32 @@ class Auth extends React.Component {
         <Universe />
         <div className="auth-form">
           <div className="container">
+            <div className="auth-form__user-icon">
+              <i className="mi mi-Contact"></i>
+            </div>
             {this.state.isLoginFormOpen ? (
               <React.Fragment>
                 <h2 className="auth-form__title">Login</h2>
                 <div className="auth-form__inputs">
-                  <input
-                    className="auth-form__inputs_input"
-                    placeholder="Email..."
-                    type="email"
-                    ref={this.logEmail}
-                  />
-                  <input
-                    className="auth-form__inputs_input"
-                    placeholder="Password..."
-                    type="password"
-                    ref={this.logPassword}
-                  />
+                  <label className="auth-form__label">
+                    Email:{" "}
+                    <input
+                      className="auth-form__inputs_input"
+                      placeholder="yourname@example.com"
+                      type="email"
+                      ref={this.logEmail}
+                    />
+                  </label>
+                  <label className="auth-form__label">
+                    Password:{" "}
+                    <input
+                      className="auth-form__inputs_input"
+                      placeholder="********"
+                      type="password"
+                      ref={this.logPassword}
+                    />
+                  </label>
+
                   <button className="auth-form__button" onClick={this.login}>
                     Log in
                   </button>
@@ -67,24 +77,33 @@ class Auth extends React.Component {
               <React.Fragment>
                 <h2 className="auth-form__title">Sign up</h2>
                 <div className="auth-form__inputs">
-                  <input
-                    className="auth-form__inputs_input"
-                    placeholder="Name..."
-                    type="text"
-                    ref={this.regName}
-                  />
-                  <input
-                    className="auth-form__inputs_input"
-                    placeholder="Email..."
-                    type="emain"
-                    ref={this.regEmail}
-                  />
-                  <input
-                    className="auth-form__inputs_input"
-                    placeholder="Password..."
-                    type="password"
-                    ref={this.regPassword}
-                  />
+                  <label className="auth-form__label">
+                    Name:{" "}
+                    <input
+                      className="auth-form__inputs_input"
+                      placeholder="Your name"
+                      type="text"
+                      ref={this.regName}
+                    />
+                  </label>
+                  <label className="auth-form__label">
+                    Email:{" "}
+                    <input
+                      className="auth-form__inputs_input"
+                      placeholder="yourname@example.com"
+                      type="emain"
+                      ref={this.regEmail}
+                    />
+                  </label>
+                  <label className="auth-form__label">
+                    Password:{" "}
+                    <input
+                      className="auth-form__inputs_input"
+                      placeholder="********"
+                      type="password"
+                      ref={this.regPassword}
+                    />
+                  </label>
                   <button className="auth-form__button" onClick={this.register}>
                     Sign up
                   </button>
@@ -92,7 +111,7 @@ class Auth extends React.Component {
               </React.Fragment>
             )}
             <p className="auth_error">{this.props.error && this.props.error}</p>
-            <p
+            <span
               className="auth_login"
               onClick={() => {
                 this.setState({
@@ -101,7 +120,7 @@ class Auth extends React.Component {
               }}
             >
               {this.state.isLoginFormOpen ? "Sign up" : "Login"}
-            </p>
+            </span>
           </div>
         </div>
         {this.props.pending && <Preloader mode="fullscreen" />}
