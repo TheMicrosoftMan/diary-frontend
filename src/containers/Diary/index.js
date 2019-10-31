@@ -10,6 +10,7 @@ import {
   MaskedTextField,
   SearchBox
 } from "office-ui-fabric-react";
+import { CSSTransition } from "react-transition-group";
 
 import { userLogout } from "../../_actions/user.actions";
 import {
@@ -36,48 +37,13 @@ class Diary extends React.Component {
       selectedDate: moment().startOf("date"),
       monthSelected: moment().startOf("month"),
 
-      showSidebar: true
+      showSidebar: window.innerWidth >= 740 ? true : false
     };
 
     window.addEventListener("resize", this.windowResize);
 
     initializeIcons();
   }
-
-  windowResize = () => {
-    if (window.innerWidth >= 740) {
-      this.setState({ showSidebar: true });
-    }
-  };
-
-  addDay(text) {
-    this.props.addDiaryDay(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      text,
-      moment(this.state.selectedDate)
-        .startOf("date")
-        .format("YYYY-MM-DD")
-    );
-  }
-
-  updateDay(id, text) {
-    this.props.updateDiaryDay(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      id,
-      text
-    );
-  }
-
-  findByRange = () => {
-    this.props.findByRangeAction(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      this.state.monthSelected.startOf("month").toDate(),
-      this.state.monthSelected.endOf("month").toDate()
-    );
-  };
 
   componentDidMount() {
     this.props.findByRangeAction(
@@ -88,18 +54,59 @@ class Diary extends React.Component {
     );
   }
 
-  handleDayClick(day) {
+  windowResize = () => {
+    if (window.innerWidth >= 740) {
+      this.setState({ showSidebar: true });
+    }
+  };
+
+  addDay = text => {
+    this.props.addDiaryDay(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      text,
+      moment(this.state.selectedDate)
+        .startOf("date")
+        .format("YYYY-MM-DD")
+    );
+  };
+
+  updateDay = (id, text) => {
+    this.props.updateDiaryDay(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      id,
+      text
+    );
+  };
+
+  findByRange = () => {
+    const dateState = this.state.monthSelected.clone();
+    const period = {
+      start: dateState.startOf("month").toDate(),
+      end: dateState.endOf("month").toDate()
+    };
+
+    this.props.findByRangeAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      period.start,
+      period.end
+    );
+  };
+
+  handleDayClick = day => {
     this.setState({
       selectedDate: moment(day).startOf("date")
     });
-  }
+  };
 
   goToMonth = month => {
     this.setState(
       {
         monthSelected: moment(month)
       },
-      this.findByRange
+      () => this.findByRange()
     );
   };
 
@@ -121,7 +128,7 @@ class Diary extends React.Component {
     );
   };
 
-  navbar(params) {
+  navbar = params => {
     return (
       <div className="DayPicker-NavBar">
         <span className="DayPicker-NavBar_month-year">
@@ -143,7 +150,7 @@ class Diary extends React.Component {
         </div>
       </div>
     );
-  }
+  };
 
   render() {
     return (
@@ -177,7 +184,12 @@ class Diary extends React.Component {
               </div>
 
               <div className="diary-container__main">
-                {this.state.showSidebar && (
+                <CSSTransition
+                  in={this.state.showSidebar}
+                  timeout={400}
+                  classNames="diary-container__main_calendar-container-animation"
+                  unmountOnExit
+                >
                   <div className="diary-container__main_calendar-container">
                     <div className="find-text-block">
                       <div className="search-panel">
@@ -269,11 +281,15 @@ class Diary extends React.Component {
                                       const newDate = moment(
                                         e.target.value,
                                         "DD.MM.YYYY"
+                                      ).startOf("date");
+
+                                      this.setState(
+                                        {
+                                          selectedDate: newDate,
+                                          monthSelected: newDate
+                                        },
+                                        () => this.findByRange()
                                       );
-                                      this.setState({
-                                        selectedDate: newDate,
-                                        monthSelected: newDate
-                                      });
                                     }
                                   }}
                                 />
@@ -284,7 +300,7 @@ class Diary extends React.Component {
                       </React.Fragment>
                     )}
                   </div>
-                )}
+                </CSSTransition>
                 <div className="diary-container__main_new-day-container">
                   <Day
                     date={moment(this.state.selectedDate).format(

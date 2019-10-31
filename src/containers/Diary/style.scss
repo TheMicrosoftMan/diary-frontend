@@ -131,6 +131,28 @@
             }
           }
         }
+
+        &-animation-enter {
+          opacity: 0;
+          margin-top: -465px;
+        }
+
+        &-animation-enter-active {
+          opacity: 1;
+          margin-top: 0;
+          transition: all ease 0.4s;
+        }
+
+        &-animation-exit {
+          opacity: 1;
+          margin-top: 0;
+        }
+
+        &-animation-exit-active {
+          opacity: 0;
+          margin-top: -465px;
+          transition: all ease 0.4s;
+        }
       }
 
       &_emtry {
