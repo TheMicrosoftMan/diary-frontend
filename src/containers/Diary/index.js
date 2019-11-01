@@ -162,7 +162,7 @@ class Diary extends React.Component {
                 <div className="diary-container__title-container_title">
                   {this.props.user.user.name}
                 </div>
-                <div className="diary-container__title-container_logout">
+                <div className="diary-container__title-container_options">
                   <IconButton
                     menuProps={{
                       items: [
