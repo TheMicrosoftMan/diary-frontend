@@ -8,7 +8,9 @@ import {
   MessageBarType,
   IconButton,
   MaskedTextField,
-  SearchBox
+  SearchBox,
+  Spinner,
+  SpinnerSize
 } from "office-ui-fabric-react";
 import { CSSTransition } from "react-transition-group";
 
@@ -23,7 +25,6 @@ import {
   clearFindedResults
 } from "../../_actions/diary.actions";
 
-import Preloader from "../../components/Preloader";
 import { Day, MiniDay } from "../../components/Day";
 
 class Diary extends React.Component {
@@ -163,6 +164,9 @@ class Diary extends React.Component {
                   {this.props.user.user.name}
                 </div>
                 <div className="diary-container__title-container_options">
+                  {this.props.diary.pending && (
+                    <Spinner size={SpinnerSize.medium} />
+                  )}
                   <IconButton
                     menuProps={{
                       items: [
