@@ -163,12 +163,33 @@ class Diary extends React.Component {
                   {this.props.user.user.name}
                 </div>
                 <div className="diary-container__title-container_logout">
-                  <button
-                    className="diary-container__title-container_logout_btn"
-                    onClick={this.props.userLogout}
-                  >
-                    Logout
-                  </button>
+                  <IconButton
+                    menuProps={{
+                      items: [
+                        {
+                          key: "statisticsMessage",
+                          text: "Statistics",
+                          iconProps: { iconName: "StackedLineChart" }
+                        },
+                        {
+                          key: "settingsEvent",
+                          text: "Settings",
+                          iconProps: { iconName: "Settings" }
+                        },
+                        {
+                          key: "signOutEvent",
+                          text: "Sign out",
+                          onClick: this.props.userLogout
+                        }
+                      ],
+                      directionalHintFixed: true
+                    }}
+                    iconProps={{
+                      iconName: "Settings"
+                    }}
+                    title="Settings"
+                    ariaLabel="Settings"
+                  />
                 </div>
               </div>
 

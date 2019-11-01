@@ -50,8 +50,18 @@
       }
 
       &_logout {
-        &_btn {
+        display: flex;
+
+        &_btn,
+        .ms-Button {
           @include button-white();
+          padding: 0;
+          background: none;
+          color: rgb(50, 49, 48);
+          box-shadow: none;
+          border: none;
+          color: #fff;
+          font-size: 1.3rem;
         }
       }
     }
