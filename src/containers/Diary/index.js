@@ -30,6 +30,8 @@ import { downloadJSON, downloadTXT } from "../../_helpers/download";
 import { getStats } from "../../_helpers/stats";
 
 import { Day, MiniDay } from "../../components/Day";
+
+import Modal from "../../components/Modal";
 import StatisticModal from "../../components/StatisticModal";
 
 class Diary extends React.Component {
@@ -45,7 +47,8 @@ class Diary extends React.Component {
       stats: {},
 
       showSidebar: window.innerWidth >= 740 ? true : false,
-      showStatsModal: false
+      showStatsModal: false,
+      showSettingsModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -256,6 +259,11 @@ class Diary extends React.Component {
                         {
                           key: "settingsEvent",
                           text: "Settings",
+                          onClick: () => {
+                            this.setState({
+                              showSettingsModal: true
+                            });
+                          },
                           iconProps: { iconName: "Settings" }
                         },
                         {
@@ -442,17 +450,20 @@ class Diary extends React.Component {
             </div>
           </div>
         )}
-        <CSSTransition
-          in={this.state.showStatsModal}
-          timeout={400}
-          classNames="diary-container__main_calendar-container-animation"
-          unmountOnExit
+        <Modal
+          title="Statistic"
+          show={this.state.showStatsModal}
+          hide={() => this.setState({ showStatsModal: false })}
         >
-          <StatisticModal
-            stats={this.state.stats}
-            hide={() => this.setState({ showStatsModal: false })}
-          />
-        </CSSTransition>
+          <StatisticModal stats={this.state.stats} />
+        </Modal>
+        <Modal
+          title="Settings"
+          show={this.state.showSettingsModal}
+          hide={() => this.setState({ showSettingsModal: false })}
+        >
+          <span>Settings</span>
+        </Modal>
       </div>
     );
   }
