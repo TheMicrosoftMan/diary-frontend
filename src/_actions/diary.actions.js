@@ -145,7 +145,7 @@ export const clearFindedResults = () => dispatch => {
   });
 };
 
-export const importJSON = (token, id) => dispatch => {
+export const importDiary = (token, id) => dispatch => {
   return new Promise((resolve, reject) => {
     dispatch({ type: diaryConstants.GET_ALL_DAYS_REQUEST });
     getDiary(token, id)

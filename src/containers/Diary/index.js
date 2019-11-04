@@ -23,9 +23,9 @@ import {
   findByRangeAction,
   findByTextAction,
   clearFindedResults,
-  importJSON
+  importDiary
 } from "../../_actions/diary.actions";
-import { downloadJSON } from "../../_helpers/download";
+import { downloadJSON, downloadTXT } from "../../_helpers/download";
 
 import { Day, MiniDay } from "../../components/Day";
 
@@ -157,7 +157,7 @@ class Diary extends React.Component {
 
   importJSON = () => {
     this.props
-      .importJSON(this.props.user.user.token, this.props.user.user.id)
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
       .then(data => {
         const obj = data.map(day => {
           return {
@@ -167,6 +167,24 @@ class Diary extends React.Component {
         });
 
         downloadJSON(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  importTXT = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        downloadTXT(obj);
       })
       .catch(err => {
         console.error(err);
@@ -199,6 +217,12 @@ class Diary extends React.Component {
                           key: "importJSONEvent",
                           text: "Import JSON",
                           onClick: this.importJSON,
+                          iconProps: { iconName: "Download" }
+                        },
+                        {
+                          key: "saveTXTEvent",
+                          text: "Import TXT",
+                          onClick: this.importTXT,
                           iconProps: { iconName: "Download" }
                         },
                         {
@@ -404,7 +428,7 @@ const mapDispatchToProps = {
   findByRangeAction: findByRangeAction,
   findByTextAction: findByTextAction,
   clearFindedResults: clearFindedResults,
-  importJSON: importJSON
+  importDiary: importDiary
 };
 
 const mapStateToProps = state => {
