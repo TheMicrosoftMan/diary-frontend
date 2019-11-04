@@ -144,3 +144,25 @@ export const clearFindedResults = () => dispatch => {
     type: diaryConstants.FOUND_DAYS_CLEAR
   });
 };
+
+export const importJSON = (token, id) => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.GET_ALL_DAYS_REQUEST });
+    getDiary(token, id)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.GET_ALL_DAYS_SUCCESS
+        });
+
+        resolve(data.data);
+      })
+      .catch(err => {
+        dispatch({
+          type: diaryConstants.GET_ALL_DAYS_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
+      });
+  });
+};

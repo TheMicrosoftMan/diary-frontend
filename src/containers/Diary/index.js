@@ -22,8 +22,10 @@ import {
   findDayAction,
   findByRangeAction,
   findByTextAction,
-  clearFindedResults
+  clearFindedResults,
+  importJSON
 } from "../../_actions/diary.actions";
+import { downloadJSON } from "../../_helpers/download";
 
 import { Day, MiniDay } from "../../components/Day";
 
@@ -153,6 +155,24 @@ class Diary extends React.Component {
     );
   };
 
+  importJSON = () => {
+    this.props
+      .importJSON(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        downloadJSON(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   render() {
     return (
       <div className="diary-page">
@@ -174,6 +194,12 @@ class Diary extends React.Component {
                           key: "statisticsMessage",
                           text: "Statistics",
                           iconProps: { iconName: "StackedLineChart" }
+                        },
+                        {
+                          key: "importJSONEvent",
+                          text: "Import JSON",
+                          onClick: this.importJSON,
+                          iconProps: { iconName: "Download" }
                         },
                         {
                           key: "settingsEvent",
@@ -377,7 +403,8 @@ const mapDispatchToProps = {
   findDayAction: findDayAction,
   findByRangeAction: findByRangeAction,
   findByTextAction: findByTextAction,
-  clearFindedResults: clearFindedResults
+  clearFindedResults: clearFindedResults,
+  importJSON: importJSON
 };
 
 const mapStateToProps = state => {

@@ -99,6 +99,25 @@ export const diary = (state = initialState, action) => {
         errorMsg: action.payload
       };
 
+    case diaryConstants.GET_ALL_DAYS_REQUEST:
+      return {
+        ...state,
+        pending: true,
+        errorMsg: ""
+      };
+    case diaryConstants.GET_ALL_DAYS_SUCCESS:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: ""
+      };
+    case diaryConstants.GET_ALL_DAYS_ERROR:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: action.payload
+      };
+
     default:
       return {
         ...state
