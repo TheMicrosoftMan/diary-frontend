@@ -25,9 +25,12 @@ import {
   clearFindedResults,
   importDiary
 } from "../../_actions/diary.actions";
+
 import { downloadJSON, downloadTXT } from "../../_helpers/download";
+import { getStats } from "../../_helpers/stats";
 
 import { Day, MiniDay } from "../../components/Day";
+import StatisticModal from "../../components/StatisticModal";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -39,8 +42,10 @@ class Diary extends React.Component {
     this.state = {
       selectedDate: moment().startOf("date"),
       monthSelected: moment().startOf("month"),
+      stats: {},
 
-      showSidebar: window.innerWidth >= 740 ? true : false
+      showSidebar: window.innerWidth >= 740 ? true : false,
+      showStatsModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -191,6 +196,28 @@ class Diary extends React.Component {
       });
   };
 
+  showStats = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        const stats = getStats(obj);
+        this.setState({
+          stats,
+          showStatsModal: true
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   render() {
     return (
       <div className="diary-page">
@@ -211,6 +238,7 @@ class Diary extends React.Component {
                         {
                           key: "statisticsMessage",
                           text: "Statistics",
+                          onClick: this.showStats,
                           iconProps: { iconName: "StackedLineChart" }
                         },
                         {
@@ -414,6 +442,17 @@ class Diary extends React.Component {
             </div>
           </div>
         )}
+        <CSSTransition
+          in={this.state.showStatsModal}
+          timeout={400}
+          classNames="diary-container__main_calendar-container-animation"
+          unmountOnExit
+        >
+          <StatisticModal
+            stats={this.state.stats}
+            hide={() => this.setState({ showStatsModal: false })}
+          />
+        </CSSTransition>
       </div>
     );
   }
