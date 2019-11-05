@@ -23,16 +23,23 @@ import {
   findByRangeAction,
   findByTextAction,
   clearFindedResults,
-  importDiary
+  importDiary,
+  exportDiaryAction,
+  deleteAllAction
 } from "../../_actions/diary.actions";
 
-import { downloadJSON, downloadTXT } from "../../_helpers/download";
+import {
+  downloadJSON,
+  downloadTXT,
+  downloadCSV
+} from "../../_helpers/download";
 import { getStats } from "../../_helpers/stats";
 
 import { Day, MiniDay } from "../../components/Day";
 
 import Modal from "../../components/Modal";
 import StatisticModal from "../../components/StatisticModal";
+import ExportModal from "../../components/ExportModal";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -48,7 +55,8 @@ class Diary extends React.Component {
 
       showSidebar: window.innerWidth >= 740 ? true : false,
       showStatsModal: false,
-      showSettingsModal: false
+      showSettingsModal: false,
+      showExportModal: true
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -88,6 +96,13 @@ class Diary extends React.Component {
       this.props.user.user.id,
       id,
       text
+    );
+  };
+
+  deleteAll = () => {
+    this.props.deleteAllAction(
+      this.props.user.user.token,
+      this.props.user.user.id
     );
   };
 
@@ -199,6 +214,24 @@ class Diary extends React.Component {
       });
   };
 
+  importCSV = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate),
+            text: day.day
+          };
+        });
+
+        downloadCSV(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   showStats = () => {
     this.props
       .importDiary(this.props.user.user.token, this.props.user.user.id)
@@ -245,6 +278,16 @@ class Diary extends React.Component {
                           iconProps: { iconName: "StackedLineChart" }
                         },
                         {
+                          key: "uploadJSONEvent",
+                          text: "Export from CSV",
+                          onClick: () => {
+                            this.setState({
+                              showExportModal: true
+                            });
+                          },
+                          iconProps: { iconName: "Upload" }
+                        },
+                        {
                           key: "importJSONEvent",
                           text: "Import JSON",
                           onClick: this.importJSON,
@@ -254,6 +297,12 @@ class Diary extends React.Component {
                           key: "saveTXTEvent",
                           text: "Import TXT",
                           onClick: this.importTXT,
+                          iconProps: { iconName: "Download" }
+                        },
+                        {
+                          key: "saveCSVEvent",
+                          text: "Import CSV",
+                          onClick: this.importCSV,
                           iconProps: { iconName: "Download" }
                         },
                         {
@@ -462,7 +511,22 @@ class Diary extends React.Component {
           show={this.state.showSettingsModal}
           hide={() => this.setState({ showSettingsModal: false })}
         >
-          <span>Settings</span>
+          <div>
+            <button onClick={this.deleteAll}>Delete all</button>
+          </div>
+        </Modal>
+        <Modal
+          title="Export from CSV"
+          show={this.state.showExportModal}
+          hide={() => this.setState({ showExportModal: false })}
+        >
+          <ExportModal
+            user={{
+              token: this.props.user.user.token,
+              id: this.props.user.user.id
+            }}
+            upload={this.props.exportDiaryAction}
+          />
         </Modal>
       </div>
     );
@@ -478,7 +542,9 @@ const mapDispatchToProps = {
   findByRangeAction: findByRangeAction,
   findByTextAction: findByTextAction,
   clearFindedResults: clearFindedResults,
-  importDiary: importDiary
+  importDiary: importDiary,
+  exportDiaryAction: exportDiaryAction,
+  deleteAllAction: deleteAllAction
 };
 
 const mapStateToProps = state => {

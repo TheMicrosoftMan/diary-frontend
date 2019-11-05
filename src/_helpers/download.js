@@ -13,6 +13,15 @@ export const downloadTXT = data => {
   download(textData, "text/plain", "txt");
 };
 
+export const downloadCSV = data => {
+  let CSVstring = "Date,Text\n";
+  data.forEach(el => {
+    CSVstring += `"${el.date}","${el.text}"\n`;
+  });
+
+  download(CSVstring, "text/csv", "csv");
+};
+
 const download = (data, type, extensions) => {
   const blob = new Blob([data], { type: type });
   const url = window.URL.createObjectURL(blob);

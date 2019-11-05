@@ -99,3 +99,34 @@ export const findByText = (token, ownerID, day) => {
     }
   );
 };
+
+export const exportDiary = (token, ownerID, file) => {
+  return axios.post(
+    `${server}/upload`,
+    {
+      ownerID: ownerID,
+      file: file
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};
+
+export const deleteAllDays = (token, ownerID) => {
+  return axios.post(
+    `${server}/deleteAll`,
+    {
+      ownerID: ownerID
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    }
+  );
+};

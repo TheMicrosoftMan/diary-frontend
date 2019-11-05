@@ -1,0 +1,14 @@
+.exportModal {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &__file-inp {
+    width: 100%;
+  }
+
+  &__btn {
+    @include button-white();
+    max-width: max-content;
+  }
+}

@@ -5,7 +5,9 @@ import {
   updateDay,
   findDay,
   findByRange,
-  findByText
+  findByText,
+  exportDiary,
+  deleteAllDays
 } from "../_api/diary";
 
 export const getDiaryAction = (token, id) => dispatch => {
@@ -73,6 +75,23 @@ export const updateDiaryDay = (token, ownerID, dayID, text) => (
       console.error(err.response.data.msg);
       dispatch({
         type: diaryConstants.UPDATE_DAY_ERROR,
+        payload: err.response.data.msg
+      });
+    });
+};
+
+export const deleteAllAction = (token, ownerID) => dispatch => {
+  dispatch({ type: diaryConstants.DELETE_ALL_REQUEST });
+  deleteAllDays(token, ownerID)
+    .then(data => {
+      dispatch({
+        type: diaryConstants.DELETE_ALL_SUCCESS
+      });
+    })
+    .catch(err => {
+      console.error(err.response.data.msg);
+      dispatch({
+        type: diaryConstants.DELETE_ALL_ERROR,
         payload: err.response.data.msg
       });
     });
@@ -165,4 +184,21 @@ export const importDiary = (token, id) => dispatch => {
         reject(err.response.data.msg);
       });
   });
+};
+
+export const exportDiaryAction = (token, id, file) => dispatch => {
+  dispatch({ type: diaryConstants.EXPORT_DIARY_REQUEST });
+  exportDiary(token, id, file)
+    .then(data => {
+      dispatch({
+        type: diaryConstants.EXPORT_DIARY_SUCCESS,
+        payload: data.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: diaryConstants.EXPORT_DIARY_ERROR,
+        payload: err.response.data.msg
+      });
+    });
 };
