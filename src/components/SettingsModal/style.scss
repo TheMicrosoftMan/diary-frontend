@@ -1,0 +1,10 @@
+.settingsModal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__delete-btn {
+    @include button-red();
+    width: 100%;
+  }
+}

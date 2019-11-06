@@ -40,6 +40,7 @@ import { Day, MiniDay } from "../../components/Day";
 import Modal from "../../components/Modal";
 import StatisticModal from "../../components/StatisticModal";
 import ExportModal from "../../components/ExportModal";
+import SettingsModal from "../../components/SettingsModal";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Diary extends React.Component {
       showSidebar: window.innerWidth >= 740 ? true : false,
       showStatsModal: false,
       showSettingsModal: false,
-      showExportModal: true
+      showExportModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -506,15 +507,17 @@ class Diary extends React.Component {
         >
           <StatisticModal stats={this.state.stats} />
         </Modal>
-        <Modal
+
+        <SettingsModal
           title="Settings"
           show={this.state.showSettingsModal}
           hide={() => this.setState({ showSettingsModal: false })}
-        >
-          <div>
-            <button onClick={this.deleteAll}>Delete all</button>
-          </div>
-        </Modal>
+          options={{
+            deleteAll: this.deleteAll
+          }}
+          pending={this.props.diary.pending}
+        />
+
         <ExportModal
           title="Export from CSV"
           show={this.state.showExportModal}
