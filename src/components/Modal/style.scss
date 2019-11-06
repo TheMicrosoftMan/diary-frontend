@@ -6,11 +6,11 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
 
   &__shadow {
     position: absolute;
-    @include acrylic-background-black;
+    background-color: #201f1e;
+    opacity: 0.7;
     top: 0;
     left: 0;
     width: 100vw;
@@ -22,7 +22,7 @@
     max-width: 450px;
     width: 100%;
     height: max-content;
-    margin: 0 20px;
+    margin: 30px 0 20px;
     @include acrylic-background-white;
     z-index: 1;
 
@@ -73,7 +73,7 @@
 
       &_body {
         display: flex;
-        margin-top: 15px;
+        margin-top: 20px;
       }
     }
   }

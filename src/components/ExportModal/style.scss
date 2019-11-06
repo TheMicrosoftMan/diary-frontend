@@ -1,14 +1,79 @@
 .exportModal {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
 
-  &__file-inp {
-    width: 100%;
+  &__file {
+    display: flex;
+    align-items: center;
+
+    &_name {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      height: 32px;
+      font-weight: 400;
+      font-size: rem(14px);
+      line-height: rem(20px);
+      box-sizing: border-box;
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(138, 136, 134);
+      border-radius: 2px;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    &_label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include button-white();
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &_inp {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
   }
 
-  &__btn {
-    @include button-white();
-    max-width: max-content;
+  &__footer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    &_btn {
+      @include button-white();
+      max-width: max-content;
+    }
+
+    &_spinner {
+      margin-left: 10px;
+    }
+
+    &_message-result {
+      font-weight: 600;
+      font-size: rem(14px);
+      line-height: rem(20px);
+      margin-left: 10px;
+    }
+
+    .success {
+      color: #0b6a0b;
+    }
+
+    .error {
+      color: #a4262c;
+    }
   }
 }

@@ -515,19 +515,17 @@ class Diary extends React.Component {
             <button onClick={this.deleteAll}>Delete all</button>
           </div>
         </Modal>
-        <Modal
+        <ExportModal
           title="Export from CSV"
           show={this.state.showExportModal}
           hide={() => this.setState({ showExportModal: false })}
-        >
-          <ExportModal
-            user={{
-              token: this.props.user.user.token,
-              id: this.props.user.user.id
-            }}
-            upload={this.props.exportDiaryAction}
-          />
-        </Modal>
+          user={{
+            token: this.props.user.user.token,
+            id: this.props.user.user.id
+          }}
+          upload={this.props.exportDiaryAction}
+          pending={this.props.diary.pending}
+        />
       </div>
     );
   }
