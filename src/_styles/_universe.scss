@@ -11,11 +11,12 @@ $cinto: #d7d6e5;
 $mano: #c11c43;
 
 .universe {
-  background-color: $espacio;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-color: $espacio;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  bottom: 0;
   overflow: hidden;
   z-index: 1;
 

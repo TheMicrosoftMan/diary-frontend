@@ -70,6 +70,27 @@ export const diary = (state = initialState, action) => {
         pending: false,
         errorMsg: action.payload
       };
+
+    case diaryConstants.DELETE_ALL_REQUEST:
+      return {
+        ...state,
+        pending: true,
+        errorMsg: ""
+      };
+    case diaryConstants.DELETE_ALL_SUCCESS:
+      return {
+        ...state,
+        diary: [],
+        pending: false,
+        errorMsg: ""
+      };
+    case diaryConstants.DELETE_ALL_ERROR:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: action.payload
+      };
+
     case diaryConstants.FOUND_DAYS_REQUEST:
       return {
         ...state,
@@ -97,6 +118,51 @@ export const diary = (state = initialState, action) => {
         foundDays: [],
         pending: false,
         errorMsg: action.payload
+      };
+
+    case diaryConstants.GET_ALL_DAYS_REQUEST:
+      return {
+        ...state,
+        pending: true,
+        errorMsg: ""
+      };
+    case diaryConstants.GET_ALL_DAYS_SUCCESS:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: ""
+      };
+    case diaryConstants.GET_ALL_DAYS_ERROR:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: action.payload
+      };
+
+    case diaryConstants.EXPORT_DIARY_REQUEST:
+      return {
+        ...state,
+        pending: true,
+        errorMsg: ""
+      };
+    case diaryConstants.EXPORT_DIARY_SUCCESS:
+      return {
+        ...state,
+        diary: action.payload,
+        pending: false,
+        errorMsg: ""
+      };
+    case diaryConstants.EXPORT_DIARY_ERROR:
+      return {
+        ...state,
+        pending: false,
+        errorMsg: action.payload
+      };
+
+    case diaryConstants.HIDE_ERROR:
+      return {
+        ...state,
+        errorMsg: ""
       };
 
     default:

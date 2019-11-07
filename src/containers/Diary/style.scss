@@ -49,9 +49,16 @@
         color: #323130;
       }
 
-      &_logout {
-        &_btn {
-          @include button-white();
+      &_options {
+        display: flex;
+        justify-content: flex-end;
+
+        .ms-Button {
+          color: #323130;
+        }
+
+        .ms-Spinner {
+          margin: 0 8px;
         }
       }
     }
@@ -130,6 +137,28 @@
               margin-bottom: 15px;
             }
           }
+        }
+
+        &-animation-enter {
+          opacity: 0;
+          margin-top: -465px;
+        }
+
+        &-animation-enter-active {
+          opacity: 1;
+          margin-top: 0;
+          transition: all ease 0.4s;
+        }
+
+        &-animation-exit {
+          opacity: 1;
+          margin-top: 0;
+        }
+
+        &-animation-exit-active {
+          opacity: 0;
+          margin-top: -465px;
+          transition: all ease 0.4s;
         }
       }
 

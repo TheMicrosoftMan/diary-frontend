@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 
   .auth-form {
@@ -15,17 +15,22 @@
     max-width: 300px;
     width: 100%;
     box-sizing: border-box;
+    transition: margin 1s ease-in-out;
     z-index: 2;
 
     .auth_login {
       position: relative;
-
-      text-decoration: underline;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: rem(14px);
+      line-height: rem(20px);
       width: max-content;
-      margin: 0 10px 10px 0;
+      margin-top: 20px;
       cursor: pointer;
       z-index: 2;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .auth_error {
@@ -35,7 +40,7 @@
       line-height: rem(20px);
       color: red;
       text-align: center;
-      margin: 20px auto;
+      margin: 20px auto 0;
       z-index: 2;
     }
 
@@ -125,16 +130,22 @@
         background-color: #000;
         color: #fff;
       }
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 
   @media screen and (max-width: 350px) {
-    .auth-form {
-      margin: 0 10px;
+    .container {
+      margin: 30px 7px;
+    }
+  }
 
-      .container {
-        margin: 30px 7px;
-      }
+  @media screen and (max-height: 530px) {
+    .auth-form {
+      margin: 70px 0 20px;
     }
   }
 }

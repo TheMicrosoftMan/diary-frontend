@@ -10,8 +10,7 @@ class Auth extends React.Component {
     super(props);
 
     this.state = {
-      isLoginFormOpen: true,
-      errorMsg: ""
+      isLoginFormOpen: true
     };
 
     this.regEmail = React.createRef();
@@ -47,7 +46,7 @@ class Auth extends React.Component {
             </div>
             {this.state.isLoginFormOpen ? (
               <React.Fragment>
-                <h2 className="auth-form__title">Login</h2>
+                <h2 className="auth-form__title">Sign in</h2>
                 <div className="auth-form__inputs">
                   <label className="auth-form__label">
                     Email:{" "}
@@ -67,9 +66,8 @@ class Auth extends React.Component {
                       ref={this.logPassword}
                     />
                   </label>
-
                   <button className="auth-form__button" onClick={this.login}>
-                    Log in
+                    Sign in
                   </button>
                 </div>
               </React.Fragment>
@@ -91,7 +89,7 @@ class Auth extends React.Component {
                     <input
                       className="auth-form__inputs_input"
                       placeholder="yourname@example.com"
-                      type="emain"
+                      type="email"
                       ref={this.regEmail}
                     />
                   </label>
@@ -110,7 +108,9 @@ class Auth extends React.Component {
                 </div>
               </React.Fragment>
             )}
-            <p className="auth_error">{this.props.error && this.props.error}</p>
+            {this.props.error && (
+              <p className="auth_error">{this.props.error}</p>
+            )}
             <span
               className="auth_login"
               onClick={() => {
@@ -119,7 +119,7 @@ class Auth extends React.Component {
                 });
               }}
             >
-              {this.state.isLoginFormOpen ? "Sign up" : "Login"}
+              {this.state.isLoginFormOpen ? "Sign up" : "Sign in"}
             </span>
           </div>
         </div>

@@ -1,0 +1,18 @@
+.stats__table {
+  td {
+    width: max-content;
+    color: #000;
+    font-weight: 400;
+    padding-right: 5px;
+  }
+
+  &_number {
+    font-size: rem(20px);
+    line-height: rem(24px);
+  }
+
+  &_label {
+    font-size: rem(14px);
+    line-height: rem(20px);
+  }
+}

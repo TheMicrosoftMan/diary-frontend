@@ -5,7 +5,9 @@ import {
   updateDay,
   findDay,
   findByRange,
-  findByText
+  findByText,
+  exportDiary,
+  deleteAllDays
 } from "../_api/diary";
 
 export const getDiaryAction = (token, id) => dispatch => {
@@ -78,6 +80,29 @@ export const updateDiaryDay = (token, ownerID, dayID, text) => (
     });
 };
 
+export const deleteAllAction = (token, ownerID) => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.DELETE_ALL_REQUEST });
+    deleteAllDays(token, ownerID)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.DELETE_ALL_SUCCESS
+        });
+
+        resolve(data.data.deletedCount);
+      })
+      .catch(err => {
+        console.error(err.response.data.msg);
+        dispatch({
+          type: diaryConstants.DELETE_ALL_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
+      });
+  });
+};
+
 export const findDayAction = (token, id, dayDate) => dispatch => {
   dispatch({ type: diaryConstants.GET_DIARY_REQUEST });
   findDay(token, id, dayDate)
@@ -142,5 +167,56 @@ export const findByTextAction = (token, id, text) => dispatch => {
 export const clearFindedResults = () => dispatch => {
   dispatch({
     type: diaryConstants.FOUND_DAYS_CLEAR
+  });
+};
+
+export const importDiary = (token, id) => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.GET_ALL_DAYS_REQUEST });
+    getDiary(token, id)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.GET_ALL_DAYS_SUCCESS
+        });
+
+        resolve(data.data);
+      })
+      .catch(err => {
+        dispatch({
+          type: diaryConstants.GET_ALL_DAYS_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
+      });
+  });
+};
+
+export const exportDiaryAction = (token, id, file) => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.EXPORT_DIARY_REQUEST });
+    exportDiary(token, id, file)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.EXPORT_DIARY_SUCCESS,
+          payload: data.data
+        });
+
+        resolve();
+      })
+      .catch(err => {
+        dispatch({
+          type: diaryConstants.EXPORT_DIARY_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
+      });
+  });
+};
+
+export const hideError = () => dispatch => {
+  dispatch({
+    type: diaryConstants.HIDE_ERROR
   });
 };
