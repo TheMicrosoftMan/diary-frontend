@@ -4,10 +4,14 @@ import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 
 const loadFile = file => {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    if (!file) {
+      reject("No file selected");
+    } else {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    }
   });
 };
 
@@ -65,7 +69,7 @@ const ExportModal = ({ title, show, hide, user, upload, pending }) => {
                 await upload(user.token, user.id, base64);
                 messageDispatch({ type: "success" });
               } catch (err) {
-                console.log(err);
+                console.error(err);
                 messageDispatch({ type: "error", payload: err });
               }
             }}

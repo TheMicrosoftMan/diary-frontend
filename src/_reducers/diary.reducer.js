@@ -159,6 +159,12 @@ export const diary = (state = initialState, action) => {
         errorMsg: action.payload
       };
 
+    case diaryConstants.HIDE_ERROR:
+      return {
+        ...state,
+        errorMsg: ""
+      };
+
     default:
       return {
         ...state

@@ -10,7 +10,8 @@ export const getStats = diary => {
     stats.totalWords += day.text.split(" ").length;
   });
 
-  stats.avarageWordsPerDay = Math.round(stats.totalWords / stats.totalDays);
+  stats.avarageWordsPerDay =
+    Math.round(stats.totalWords / stats.totalDays) || 0;
 
   return stats;
 };

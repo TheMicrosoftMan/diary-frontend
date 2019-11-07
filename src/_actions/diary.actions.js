@@ -193,18 +193,30 @@ export const importDiary = (token, id) => dispatch => {
 };
 
 export const exportDiaryAction = (token, id, file) => dispatch => {
-  dispatch({ type: diaryConstants.EXPORT_DIARY_REQUEST });
-  exportDiary(token, id, file)
-    .then(data => {
-      dispatch({
-        type: diaryConstants.EXPORT_DIARY_SUCCESS,
-        payload: data.data
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.EXPORT_DIARY_REQUEST });
+    exportDiary(token, id, file)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.EXPORT_DIARY_SUCCESS,
+          payload: data.data
+        });
+
+        resolve();
+      })
+      .catch(err => {
+        dispatch({
+          type: diaryConstants.EXPORT_DIARY_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
       });
-    })
-    .catch(err => {
-      dispatch({
-        type: diaryConstants.EXPORT_DIARY_ERROR,
-        payload: err.response.data.msg
-      });
-    });
+  });
+};
+
+export const hideError = () => dispatch => {
+  dispatch({
+    type: diaryConstants.HIDE_ERROR
+  });
 };

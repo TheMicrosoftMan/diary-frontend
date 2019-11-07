@@ -25,7 +25,8 @@ import {
   clearFindedResults,
   importDiary,
   exportDiaryAction,
-  deleteAllAction
+  deleteAllAction,
+  hideError
 } from "../../_actions/diary.actions";
 
 import {
@@ -496,20 +497,16 @@ class Diary extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.diary.errorMsg && (
+        {this.props.diary.errorMsg && !this.state.showExportModal && (
           <div className="diary-notifications-list">
             <div className="diary-notifications-list__notify">
               <MessageBar
                 messageBarType={MessageBarType.error}
                 isMultiline={false}
+                onDismiss={this.props.hideError}
+                dismissButtonAriaLabel="Close"
               >
                 {this.props.diary.errorMsg}
-                <span
-                  className="diary-notifications-list__notify_logout"
-                  onClick={this.props.userLogout}
-                >
-                  Logout
-                </span>
               </MessageBar>
             </div>
           </div>
@@ -567,7 +564,8 @@ const mapDispatchToProps = {
   clearFindedResults: clearFindedResults,
   importDiary: importDiary,
   exportDiaryAction: exportDiaryAction,
-  deleteAllAction: deleteAllAction
+  deleteAllAction: deleteAllAction,
+  hideError: hideError
 };
 
 const mapStateToProps = state => {
