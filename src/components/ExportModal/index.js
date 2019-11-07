@@ -51,7 +51,7 @@ const ExportModal = ({ title, show, hide, user, upload, pending }) => {
             type="file"
             accept=".csv"
           />
-          <label for="file" className="exportModal__file_label">
+          <label htmlFor="file" className="exportModal__file_label">
             Choose a file
           </label>
         </div>

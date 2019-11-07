@@ -81,20 +81,26 @@ export const updateDiaryDay = (token, ownerID, dayID, text) => (
 };
 
 export const deleteAllAction = (token, ownerID) => dispatch => {
-  dispatch({ type: diaryConstants.DELETE_ALL_REQUEST });
-  deleteAllDays(token, ownerID)
-    .then(data => {
-      dispatch({
-        type: diaryConstants.DELETE_ALL_SUCCESS
+  return new Promise((resolve, reject) => {
+    dispatch({ type: diaryConstants.DELETE_ALL_REQUEST });
+    deleteAllDays(token, ownerID)
+      .then(data => {
+        dispatch({
+          type: diaryConstants.DELETE_ALL_SUCCESS
+        });
+
+        resolve(data.data.deletedCount);
+      })
+      .catch(err => {
+        console.error(err.response.data.msg);
+        dispatch({
+          type: diaryConstants.DELETE_ALL_ERROR,
+          payload: err.response.data.msg
+        });
+
+        reject(err.response.data.msg);
       });
-    })
-    .catch(err => {
-      console.error(err.response.data.msg);
-      dispatch({
-        type: diaryConstants.DELETE_ALL_ERROR,
-        payload: err.response.data.msg
-      });
-    });
+  });
 };
 
 export const findDayAction = (token, id, dayDate) => dispatch => {

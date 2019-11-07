@@ -53,11 +53,13 @@ class Diary extends React.Component {
       selectedDate: moment().startOf("date"),
       monthSelected: moment().startOf("month"),
       stats: {},
+      deletedDaysResult: null,
 
       showSidebar: window.innerWidth >= 740 ? true : false,
       showStatsModal: false,
       showSettingsModal: false,
-      showExportModal: false
+      showExportModal: false,
+      showResultModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -101,10 +103,22 @@ class Diary extends React.Component {
   };
 
   deleteAll = () => {
-    this.props.deleteAllAction(
-      this.props.user.user.token,
-      this.props.user.user.id
-    );
+    this.props
+      .deleteAllAction(this.props.user.user.token, this.props.user.user.id)
+      .then(count => {
+        this.setState({
+          showSettingsModal: false,
+          showResultModal: true,
+          deletedDaysResult: `Deleted ${count} days.`
+        });
+      })
+      .catch(err => {
+        this.setState({
+          showSettingsModal: false,
+          showResultModal: true,
+          deletedDaysResult: `Error: ${err}`
+        });
+      });
   };
 
   findByRange = () => {
@@ -529,6 +543,14 @@ class Diary extends React.Component {
           upload={this.props.exportDiaryAction}
           pending={this.props.diary.pending}
         />
+
+        <Modal
+          title="Delete result"
+          show={this.state.showResultModal}
+          hide={() => this.setState({ showResultModal: false })}
+        >
+          <span>{this.state.deletedDaysResult}</span>
+        </Modal>
       </div>
     );
   }
