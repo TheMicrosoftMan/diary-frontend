@@ -8,8 +8,11 @@ import {
   MessageBarType,
   IconButton,
   MaskedTextField,
-  SearchBox
+  SearchBox,
+  Spinner,
+  SpinnerSize
 } from "office-ui-fabric-react";
+import { CSSTransition } from "react-transition-group";
 
 import { userLogout } from "../../_actions/user.actions";
 import {
@@ -19,11 +22,26 @@ import {
   findDayAction,
   findByRangeAction,
   findByTextAction,
-  clearFindedResults
+  clearFindedResults,
+  importDiary,
+  exportDiaryAction,
+  deleteAllAction,
+  hideError
 } from "../../_actions/diary.actions";
 
-import Preloader from "../../components/Preloader";
+import {
+  downloadJSON,
+  downloadTXT,
+  downloadCSV
+} from "../../_helpers/download";
+import { getStats } from "../../_helpers/stats";
+
 import { Day, MiniDay } from "../../components/Day";
+
+import Modal from "../../components/Modal";
+import StatisticModal from "../../components/StatisticModal";
+import ExportModal from "../../components/ExportModal";
+import SettingsModal from "../../components/SettingsModal";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -35,49 +53,20 @@ class Diary extends React.Component {
     this.state = {
       selectedDate: moment().startOf("date"),
       monthSelected: moment().startOf("month"),
+      stats: {},
+      deletedDaysResult: null,
 
-      showSidebar: true
+      showSidebar: window.innerWidth >= 740 ? true : false,
+      showStatsModal: false,
+      showSettingsModal: false,
+      showExportModal: false,
+      showResultModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
 
     initializeIcons();
   }
-
-  windowResize = () => {
-    if (window.innerWidth >= 740) {
-      this.setState({ showSidebar: true });
-    }
-  };
-
-  addDay(text) {
-    this.props.addDiaryDay(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      text,
-      moment(this.state.selectedDate)
-        .startOf("date")
-        .format("YYYY-MM-DD")
-    );
-  }
-
-  updateDay(id, text) {
-    this.props.updateDiaryDay(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      id,
-      text
-    );
-  }
-
-  findByRange = () => {
-    this.props.findByRangeAction(
-      this.props.user.user.token,
-      this.props.user.user.id,
-      this.state.monthSelected.startOf("month").toDate(),
-      this.state.monthSelected.endOf("month").toDate()
-    );
-  };
 
   componentDidMount() {
     this.props.findByRangeAction(
@@ -88,18 +77,78 @@ class Diary extends React.Component {
     );
   }
 
-  handleDayClick(day) {
+  windowResize = () => {
+    if (window.innerWidth >= 740) {
+      this.setState({ showSidebar: true });
+    }
+  };
+
+  addDay = text => {
+    this.props.addDiaryDay(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      text,
+      moment(this.state.selectedDate)
+        .startOf("date")
+        .format("YYYY-MM-DD")
+    );
+  };
+
+  updateDay = (id, text) => {
+    this.props.updateDiaryDay(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      id,
+      text
+    );
+  };
+
+  deleteAll = () => {
+    this.props
+      .deleteAllAction(this.props.user.user.token, this.props.user.user.id)
+      .then(count => {
+        this.setState({
+          showSettingsModal: false,
+          showResultModal: true,
+          deletedDaysResult: `Deleted ${count} days.`
+        });
+      })
+      .catch(err => {
+        this.setState({
+          showSettingsModal: false,
+          showResultModal: true,
+          deletedDaysResult: `Error: ${err}`
+        });
+      });
+  };
+
+  findByRange = () => {
+    const dateState = this.state.monthSelected.clone();
+    const period = {
+      start: dateState.startOf("month").toDate(),
+      end: dateState.endOf("month").toDate()
+    };
+
+    this.props.findByRangeAction(
+      this.props.user.user.token,
+      this.props.user.user.id,
+      period.start,
+      period.end
+    );
+  };
+
+  handleDayClick = day => {
     this.setState({
       selectedDate: moment(day).startOf("date")
     });
-  }
+  };
 
   goToMonth = month => {
     this.setState(
       {
         monthSelected: moment(month)
       },
-      this.findByRange
+      () => this.findByRange()
     );
   };
 
@@ -121,7 +170,7 @@ class Diary extends React.Component {
     );
   };
 
-  navbar(params) {
+  navbar = params => {
     return (
       <div className="DayPicker-NavBar">
         <span className="DayPicker-NavBar_month-year">
@@ -143,7 +192,83 @@ class Diary extends React.Component {
         </div>
       </div>
     );
-  }
+  };
+
+  importJSON = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        downloadJSON(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  importTXT = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        downloadTXT(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  importCSV = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate),
+            text: day.day
+          };
+        });
+
+        downloadCSV(obj);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  showStats = () => {
+    this.props
+      .importDiary(this.props.user.user.token, this.props.user.user.id)
+      .then(data => {
+        const obj = data.map(day => {
+          return {
+            date: moment(day.dayDate).format("DD.MM.YYYY"),
+            text: day.day
+          };
+        });
+
+        const stats = getStats(obj);
+        this.setState({
+          stats,
+          showStatsModal: true
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   render() {
     return (
@@ -155,13 +280,71 @@ class Diary extends React.Component {
                 <div className="diary-container__title-container_title">
                   {this.props.user.user.name}
                 </div>
-                <div className="diary-container__title-container_logout">
-                  <button
-                    className="diary-container__title-container_logout_btn"
-                    onClick={this.props.userLogout}
-                  >
-                    Logout
-                  </button>
+                <div className="diary-container__title-container_options">
+                  {this.props.diary.pending && (
+                    <Spinner size={SpinnerSize.medium} />
+                  )}
+                  <IconButton
+                    menuProps={{
+                      items: [
+                        {
+                          key: "statisticsMessage",
+                          text: "Statistics",
+                          onClick: this.showStats,
+                          iconProps: { iconName: "StackedLineChart" }
+                        },
+                        {
+                          key: "uploadJSONEvent",
+                          text: "Export from CSV",
+                          onClick: () => {
+                            this.setState({
+                              showExportModal: true
+                            });
+                          },
+                          iconProps: { iconName: "Upload" }
+                        },
+                        {
+                          key: "importJSONEvent",
+                          text: "Import JSON",
+                          onClick: this.importJSON,
+                          iconProps: { iconName: "Download" }
+                        },
+                        {
+                          key: "saveTXTEvent",
+                          text: "Import TXT",
+                          onClick: this.importTXT,
+                          iconProps: { iconName: "Download" }
+                        },
+                        {
+                          key: "saveCSVEvent",
+                          text: "Import CSV",
+                          onClick: this.importCSV,
+                          iconProps: { iconName: "Download" }
+                        },
+                        {
+                          key: "settingsEvent",
+                          text: "Settings",
+                          onClick: () => {
+                            this.setState({
+                              showSettingsModal: true
+                            });
+                          },
+                          iconProps: { iconName: "Settings" }
+                        },
+                        {
+                          key: "signOutEvent",
+                          text: "Sign out",
+                          onClick: this.props.userLogout
+                        }
+                      ],
+                      directionalHintFixed: true
+                    }}
+                    iconProps={{
+                      iconName: "Settings"
+                    }}
+                    title="Settings"
+                    ariaLabel="Settings"
+                  />
                 </div>
               </div>
 
@@ -177,7 +360,12 @@ class Diary extends React.Component {
               </div>
 
               <div className="diary-container__main">
-                {this.state.showSidebar && (
+                <CSSTransition
+                  in={this.state.showSidebar}
+                  timeout={400}
+                  classNames="diary-container__main_calendar-container-animation"
+                  unmountOnExit
+                >
                   <div className="diary-container__main_calendar-container">
                     <div className="find-text-block">
                       <div className="search-panel">
@@ -269,11 +457,15 @@ class Diary extends React.Component {
                                       const newDate = moment(
                                         e.target.value,
                                         "DD.MM.YYYY"
+                                      ).startOf("date");
+
+                                      this.setState(
+                                        {
+                                          selectedDate: newDate,
+                                          monthSelected: newDate
+                                        },
+                                        () => this.findByRange()
                                       );
-                                      this.setState({
-                                        selectedDate: newDate,
-                                        monthSelected: newDate
-                                      });
                                     }
                                   }}
                                 />
@@ -284,7 +476,7 @@ class Diary extends React.Component {
                       </React.Fragment>
                     )}
                   </div>
-                )}
+                </CSSTransition>
                 <div className="diary-container__main_new-day-container">
                   <Day
                     date={moment(this.state.selectedDate).format(
@@ -305,24 +497,57 @@ class Diary extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.diary.errorMsg && (
+        {this.props.diary.errorMsg && !this.state.showExportModal && (
           <div className="diary-notifications-list">
             <div className="diary-notifications-list__notify">
               <MessageBar
                 messageBarType={MessageBarType.error}
                 isMultiline={false}
+                onDismiss={this.props.hideError}
+                dismissButtonAriaLabel="Close"
               >
                 {this.props.diary.errorMsg}
-                <span
-                  className="diary-notifications-list__notify_logout"
-                  onClick={this.props.userLogout}
-                >
-                  Logout
-                </span>
               </MessageBar>
             </div>
           </div>
         )}
+        <Modal
+          title="Statistic"
+          show={this.state.showStatsModal}
+          hide={() => this.setState({ showStatsModal: false })}
+        >
+          <StatisticModal stats={this.state.stats} />
+        </Modal>
+
+        <SettingsModal
+          title="Settings"
+          show={this.state.showSettingsModal}
+          hide={() => this.setState({ showSettingsModal: false })}
+          options={{
+            deleteAll: this.deleteAll
+          }}
+          pending={this.props.diary.pending}
+        />
+
+        <ExportModal
+          title="Export from CSV"
+          show={this.state.showExportModal}
+          hide={() => this.setState({ showExportModal: false })}
+          user={{
+            token: this.props.user.user.token,
+            id: this.props.user.user.id
+          }}
+          upload={this.props.exportDiaryAction}
+          pending={this.props.diary.pending}
+        />
+
+        <Modal
+          title="Delete result"
+          show={this.state.showResultModal}
+          hide={() => this.setState({ showResultModal: false })}
+        >
+          <span>{this.state.deletedDaysResult}</span>
+        </Modal>
       </div>
     );
   }
@@ -336,7 +561,11 @@ const mapDispatchToProps = {
   findDayAction: findDayAction,
   findByRangeAction: findByRangeAction,
   findByTextAction: findByTextAction,
-  clearFindedResults: clearFindedResults
+  clearFindedResults: clearFindedResults,
+  importDiary: importDiary,
+  exportDiaryAction: exportDiaryAction,
+  deleteAllAction: deleteAllAction,
+  hideError: hideError
 };
 
 const mapStateToProps = state => {
