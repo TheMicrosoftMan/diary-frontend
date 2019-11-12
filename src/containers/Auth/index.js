@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { userRegister, userLogin } from "../../_actions/user.actions";
 
 import Universe from "../../components/Universe";
-import Preloader from "../../components/Preloader";
+import { Spinner } from "office-ui-fabric-react";
 
 class Auth extends React.Component {
   constructor(props) {
@@ -43,87 +43,100 @@ class Auth extends React.Component {
           <div className="container">
             <div className="auth-form__user-icon">
               <i className="mi mi-Contact"></i>
+              {this.props.pending && <Spinner />}
             </div>
-            {this.state.isLoginFormOpen ? (
+            {this.props.pending && (
+              <h1 className="auth-form__project-title">My Diary</h1>
+            )}
+            {!this.props.pending && (
               <React.Fragment>
-                <h2 className="auth-form__title">Sign in</h2>
-                <div className="auth-form__inputs">
-                  <label className="auth-form__label">
-                    Email:{" "}
-                    <input
-                      className="auth-form__inputs_input"
-                      placeholder="yourname@example.com"
-                      type="email"
-                      ref={this.logEmail}
-                    />
-                  </label>
-                  <label className="auth-form__label">
-                    Password:{" "}
-                    <input
-                      className="auth-form__inputs_input"
-                      placeholder="********"
-                      type="password"
-                      ref={this.logPassword}
-                    />
-                  </label>
-                  <button className="auth-form__button" onClick={this.login}>
-                    Sign in
-                  </button>
-                </div>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <h2 className="auth-form__title">Sign up</h2>
-                <div className="auth-form__inputs">
-                  <label className="auth-form__label">
-                    Name:{" "}
-                    <input
-                      className="auth-form__inputs_input"
-                      placeholder="Your name"
-                      type="text"
-                      ref={this.regName}
-                    />
-                  </label>
-                  <label className="auth-form__label">
-                    Email:{" "}
-                    <input
-                      className="auth-form__inputs_input"
-                      placeholder="yourname@example.com"
-                      type="email"
-                      ref={this.regEmail}
-                    />
-                  </label>
-                  <label className="auth-form__label">
-                    Password:{" "}
-                    <input
-                      className="auth-form__inputs_input"
-                      placeholder="********"
-                      type="password"
-                      ref={this.regPassword}
-                    />
-                  </label>
-                  <button className="auth-form__button" onClick={this.register}>
-                    Sign up
-                  </button>
-                </div>
+                {this.state.isLoginFormOpen ? (
+                  <React.Fragment>
+                    <h2 className="auth-form__title">Sign in</h2>
+                    <div className="auth-form__inputs">
+                      <label className="auth-form__label">
+                        Email:{" "}
+                        <input
+                          className="auth-form__inputs_input"
+                          placeholder="yourname@example.com"
+                          type="email"
+                          ref={this.logEmail}
+                        />
+                      </label>
+                      <label className="auth-form__label">
+                        Password:{" "}
+                        <input
+                          className="auth-form__inputs_input"
+                          placeholder="********"
+                          type="password"
+                          ref={this.logPassword}
+                        />
+                      </label>
+                      <button
+                        className="auth-form__button"
+                        onClick={this.login}
+                      >
+                        Sign in
+                      </button>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <h2 className="auth-form__title">Sign up</h2>
+                    <div className="auth-form__inputs">
+                      <label className="auth-form__label">
+                        Name:{" "}
+                        <input
+                          className="auth-form__inputs_input"
+                          placeholder="Your name"
+                          type="text"
+                          ref={this.regName}
+                        />
+                      </label>
+                      <label className="auth-form__label">
+                        Email:{" "}
+                        <input
+                          className="auth-form__inputs_input"
+                          placeholder="yourname@example.com"
+                          type="email"
+                          ref={this.regEmail}
+                        />
+                      </label>
+                      <label className="auth-form__label">
+                        Password:{" "}
+                        <input
+                          className="auth-form__inputs_input"
+                          placeholder="********"
+                          type="password"
+                          ref={this.regPassword}
+                        />
+                      </label>
+                      <button
+                        className="auth-form__button"
+                        onClick={this.register}
+                      >
+                        Sign up
+                      </button>
+                    </div>
+                  </React.Fragment>
+                )}
+                {this.props.error && (
+                  <p className="auth_error">{this.props.error}</p>
+                )}
+                <span
+                  className="auth_login"
+                  onClick={() => {
+                    this.setState({
+                      isLoginFormOpen: !this.state.isLoginFormOpen
+                    });
+                  }}
+                >
+                  {this.state.isLoginFormOpen ? "Sign up" : "Sign in"}
+                </span>
               </React.Fragment>
             )}
-            {this.props.error && (
-              <p className="auth_error">{this.props.error}</p>
-            )}
-            <span
-              className="auth_login"
-              onClick={() => {
-                this.setState({
-                  isLoginFormOpen: !this.state.isLoginFormOpen
-                });
-              }}
-            >
-              {this.state.isLoginFormOpen ? "Sign up" : "Sign in"}
-            </span>
           </div>
         </div>
-        {this.props.pending && <Preloader mode="fullscreen" />}
       </div>
     );
   }

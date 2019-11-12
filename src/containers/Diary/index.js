@@ -42,6 +42,7 @@ import Modal from "../../components/Modal";
 import StatisticModal from "../../components/StatisticModal";
 import ExportModal from "../../components/ExportModal";
 import SettingsModal from "../../components/SettingsModal";
+import AboutModal from "../../components/AboutModal";
 
 class Diary extends React.Component {
   constructor(props) {
@@ -60,7 +61,8 @@ class Diary extends React.Component {
       showStatsModal: false,
       showSettingsModal: false,
       showExportModal: false,
-      showResultModal: false
+      showResultModal: false,
+      showAboutModal: false
     };
 
     window.addEventListener("resize", this.windowResize);
@@ -334,7 +336,15 @@ class Diary extends React.Component {
                         {
                           key: "signOutEvent",
                           text: "Sign out",
-                          onClick: this.props.userLogout
+                          onClick: this.props.userLogout,
+                          iconProps: { iconName: "FollowUser" }
+                        },
+                        {
+                          key: "aboutEvent",
+                          text: "About",
+                          onClick: () =>
+                            this.setState({ showAboutModal: true }),
+                          iconProps: { iconName: "Info" }
                         }
                       ],
                       directionalHintFixed: true
@@ -392,9 +402,6 @@ class Diary extends React.Component {
                                         "DD.MM.YYYY"
                                       )}
                                       text={findedDay.day}
-                                      onClick={() =>
-                                        this.handleDayClick(findedDay.dayDate)
-                                      }
                                     />
                                   );
                                 })}
@@ -541,6 +548,12 @@ class Diary extends React.Component {
           pending={this.props.diary.pending}
         />
 
+        <AboutModal
+          title="About"
+          show={this.state.showAboutModal}
+          hide={() => this.setState({ showAboutModal: false })}
+        />
+
         <Modal
           title="Delete result"
           show={this.state.showResultModal}
@@ -574,8 +587,5 @@ const mapStateToProps = state => {
   return { user, diary };
 };
 
-const connectedDiary = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Diary);
+const connectedDiary = connect(mapStateToProps, mapDispatchToProps)(Diary);
 export { connectedDiary as Diary };
