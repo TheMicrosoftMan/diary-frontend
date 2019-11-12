@@ -10,7 +10,8 @@ import {
   MaskedTextField,
   SearchBox,
   Spinner,
-  SpinnerSize
+  SpinnerSize,
+  FontIcon
 } from "office-ui-fabric-react";
 import { CSSTransition } from "react-transition-group";
 
@@ -450,14 +451,14 @@ class Diary extends React.Component {
                             </div>
                             <div className="search-panel__row_item">
                               <div className="search-panel__row_item_cont">
-                                <IconButton
-                                  iconProps={{
-                                    iconName: "CalendarWorkWeek"
-                                  }}
-                                  title="Go to date"
-                                  ariaLabel="Go to date"
-                                />
                                 <MaskedTextField
+                                  label={
+                                    <FontIcon
+                                      iconName="CalendarWorkWeek"
+                                      className="CalendarWorkWeek"
+                                    />
+                                  }
+                                  ariaLabel="Go to date"
                                   mask="99.99.9999"
                                   onKeyDown={e => {
                                     if (e.keyCode === 13) {
