@@ -46,7 +46,7 @@ class Auth extends React.Component {
               {this.props.pending && <Spinner />}
             </div>
             {this.props.pending && (
-              <h1 className="auth-form__project-title">My Diary</h1>
+              <h1 className="auth-form__project-title">My React Diary</h1>
             )}
             {!this.props.pending && (
               <React.Fragment>
