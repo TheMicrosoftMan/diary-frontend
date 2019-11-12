@@ -1,0 +1,94 @@
+.aboutModal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    &__icon {
+      $size: 100px;
+
+      background-color: #767676;
+      color: #fff;
+      border-radius: 50%;
+      width: $size;
+      height: $size;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+    }
+
+    &__text {
+      color: #000;
+      font-size: 2rem;
+    }
+  }
+
+  .body {
+    margin-top: 20px;
+    text-align: justify;
+
+    h4 {
+      margin-top: 8px;
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 4px;
+
+      li {
+        $size: 14px;
+
+        width: 100%;
+        line-height: $size;
+        margin-bottom: 4px;
+
+        display: flex;
+        align-items: center;
+
+        &:last-child {
+          margin: 0;
+        }
+
+        &::before {
+          content: "";
+          width: $size;
+          height: $size;
+          border: 2px solid #767676;
+          border-radius: 50%;
+          margin-right: 7px;
+        }
+      }
+
+      .done {
+        &::before {
+          background-color: #767676;
+        }
+      }
+    }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+
+    .version {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      color: #767676;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+  }
+}
