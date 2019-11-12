@@ -402,9 +402,6 @@ class Diary extends React.Component {
                                         "DD.MM.YYYY"
                                       )}
                                       text={findedDay.day}
-                                      onClick={() =>
-                                        this.handleDayClick(findedDay.dayDate)
-                                      }
                                     />
                                   );
                                 })}

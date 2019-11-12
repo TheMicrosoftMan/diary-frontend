@@ -68,14 +68,19 @@ const Day = props => {
 };
 
 const MiniDay = props => {
+  const [showFull, setShowFull] = useState(false);
+
   return (
-    <div className="day mini-day" onClick={props.onClick}>
+    <div className="day mini-day" onClick={() => setShowFull(!showFull)}>
       <div className="day-container">
         <span className="day-container__date">{props.date}</span>
         <div className="day-container__text">
-          {props.text.length < 140
-            ? props.text
-            : `${props.text.slice(0, 140)}...`}
+          {!showFull
+            ? props.text.length < 140
+              ? props.text
+              : `${props.text.slice(0, 140)}...`
+            : props.text}
+          {}
         </div>
       </div>
     </div>
