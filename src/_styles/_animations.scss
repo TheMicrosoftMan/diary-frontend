@@ -1,0 +1,16 @@
+// start animation
+$start-opacity: start-opacity 0.3s 1 linear;
+$start-opacity-fill-mode: none, forwards;
+$fisrt: 0.5s;
+$second: 1s;
+$third: 1.5s;
+$fourth: 2s;
+
+@keyframes start-opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

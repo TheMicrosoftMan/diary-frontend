@@ -5,6 +5,8 @@ import { userRegister, userLogin } from "../../_actions/user.actions";
 import Universe from "../../components/Universe";
 import { Spinner } from "office-ui-fabric-react";
 
+import { ReactComponent as Icon } from "../../images/icon.svg";
+
 class Auth extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +44,7 @@ class Auth extends React.Component {
         <div className="auth-form">
           <div className="container">
             <div className="auth-form__user-icon">
-              <i className="mi mi-Contact"></i>
+              <Icon />
               {this.props.pending && <Spinner />}
             </div>
             {this.props.pending && (
@@ -152,8 +154,5 @@ const mapDispatchToProps = {
   userLogin: userLogin
 };
 
-const connectedAuth = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Auth);
+const connectedAuth = connect(mapStateToProps, mapDispatchToProps)(Auth);
 export { connectedAuth as Auth };
