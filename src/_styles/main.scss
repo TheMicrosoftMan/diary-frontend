@@ -3,6 +3,7 @@
 @import "./fonts";
 @import "./mixins";
 @import "./micon.min";
+@import "./animations";
 @import "./universe";
 @import "../containers/Auth/style.scss";
 @import "../containers/Diary/style.scss";
@@ -25,4 +26,8 @@ body {
   background-size: cover;
   font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
     -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+.icon {
+  fill: #fff;
 }

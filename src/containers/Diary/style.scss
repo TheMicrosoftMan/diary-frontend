@@ -98,6 +98,19 @@
 
                 .ms-TextField {
                   width: 100%;
+
+                  &-wrapper {
+                    display: flex;
+                    align-items: center;
+                  }
+                }
+
+                .CalendarWorkWeek {
+                  vertical-align: middle;
+                  font-size: 1rem;
+                  line-height: 1.2rem;
+                  margin-right: 7px;
+                  color: rgb(0, 120, 212);
                 }
               }
 
