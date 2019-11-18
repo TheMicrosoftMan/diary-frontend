@@ -36,10 +36,10 @@ $mano: #c11c43;
     height: 100%;
   }
   .stars {
-    animation-name: planeta;
-    animation-duration: 350000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation: planeta 350000ms infinite linear, $start-opacity;
+    animation-delay: 0s, $fisrt;
+    animation-fill-mode: $start-opacity-fill-mode;
+    opacity: 0;
     overflow: hidden;
     left: -50%;
     top: -50%;
@@ -63,10 +63,11 @@ $mano: #c11c43;
     }
   }
   .planets {
-    animation-name: planeta;
-    animation-duration: 200000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation: planeta 200000ms infinite linear, $start-opacity;
+    animation-delay: 0s, $second;
+    animation-fill-mode: $start-opacity-fill-mode;
+    opacity: 0;
+
     .pl1 {
       background: $pl1;
       border-radius: 50%;
@@ -171,10 +172,10 @@ $mano: #c11c43;
     left: 50%;
     transition: all 4s ease-out;
     top: 20%;
-    animation-name: ast;
-    animation-duration: 50000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation: ast 50000ms infinite linear, $start-opacity;
+    animation-delay: 0s, $third;
+    animation-fill-mode: $start-opacity-fill-mode;
+    opacity: 0;
     transform: rotate(30deg);
     cursor: pointer;
     z-index: 999;

@@ -8,7 +8,6 @@ const Day = props => {
   return (
     <div className="day">
       <div className="day-container">
-        <span className="day-container__date">{props.date}</span>
         {props.day && (
           <div
             className="day-container__text"
@@ -24,6 +23,9 @@ const Day = props => {
           <React.Fragment>
             <div className="day-container__text">
               <TextField
+                label={
+                  <span className="day-container__date">{props.date}</span>
+                }
                 className="day-container__text_area"
                 placeholder="Enter your day..."
                 multiline

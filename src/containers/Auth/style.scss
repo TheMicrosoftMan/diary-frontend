@@ -15,7 +15,10 @@
     max-width: 300px;
     width: 100%;
     box-sizing: border-box;
-    transition: margin 1s ease-in-out;
+    animation: $start-opacity;
+    animation-fill-mode: forwards;
+    animation-delay: $fourth;
+    opacity: 0;
     z-index: 2;
 
     .auth_login {
@@ -68,6 +71,9 @@
       justify-content: center;
       color: #fff;
       font-size: 3rem;
+      overflow: hidden;
+      padding: 15px;
+      box-sizing: border-box;
 
       .ms-Spinner-circle {
         position: absolute;
