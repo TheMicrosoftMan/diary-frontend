@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { userRegister, userLogin } from "../../_actions/user.actions";
 
-import Universe from "../../components/Universe";
 import { Spinner } from "office-ui-fabric-react";
 
 import { ReactComponent as Icon } from "../../images/icon.svg";
@@ -40,7 +39,6 @@ class Auth extends React.Component {
   render() {
     return (
       <div className="auth">
-        <Universe />
         <div className="auth-form">
           <div className="container">
             <div className="auth-form__user-icon">

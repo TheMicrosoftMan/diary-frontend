@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { userAutoLogin } from "./_actions/user.actions";
 import { Auth } from "./containers/Auth";
 import { Diary } from "./containers/Diary";
+import Universe from "./components/Universe";
 import "./_styles/main.scss";
 
 class App extends React.Component {
@@ -12,7 +13,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">{this.props.user.token ? <Diary /> : <Auth />}</div>
+      <div className="App">
+        <Universe />
+        {this.props.user.token ? <Diary /> : <Auth />}
+      </div>
     );
   }
 }
@@ -26,8 +30,5 @@ const mapStateToProps = state => {
   return user;
 };
 
-const connectedApp = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 export { connectedApp as App };
