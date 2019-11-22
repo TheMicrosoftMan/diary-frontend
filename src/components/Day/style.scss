@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 
   &-container {
-    margin: 10px;
+    margin: 1px 10px 10px;
 
     &__date {
       font-weight: 600;
@@ -19,7 +19,7 @@
       line-height: rem(20px);
       text-align: justify;
       color: #000;
-      margin: 7px 0;
+      margin-bottom: 7px;
       max-width: 100%;
       word-wrap: break-word;
 

@@ -64,3 +64,9 @@
     color: rgb(255, 255, 255);
   }
 }
+
+@mixin startWindowOpacity() {
+  animation: $start-opacity;
+  animation-fill-mode: forwards;
+  animation-delay: $window;
+}
