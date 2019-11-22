@@ -15,9 +15,7 @@
     max-width: 300px;
     width: 100%;
     box-sizing: border-box;
-    animation: $start-opacity;
-    animation-fill-mode: forwards;
-    animation-delay: $fourth;
+    @include startWindowOpacity;
     opacity: 0;
     z-index: 2;
 

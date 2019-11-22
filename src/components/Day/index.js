@@ -8,16 +8,21 @@ const Day = props => {
   return (
     <div className="day">
       <div className="day-container">
-        {props.day && (
-          <div
-            className="day-container__text"
-            onClick={() => {
-              setText(props.day.day);
-              setIsEdit(true);
-            }}
-          >
-            {props.day.day}
-          </div>
+        {props.day && !isEdit && (
+          <React.Fragment>
+            <span className="day-container__date ms-Label root-79">
+              {props.date}
+            </span>
+            <div
+              className="day-container__text"
+              onClick={() => {
+                setText(props.day.day);
+                setIsEdit(true);
+              }}
+            >
+              {props.day.day}
+            </div>
+          </React.Fragment>
         )}
         {(!props.day || isEdit) && (
           <React.Fragment>
@@ -82,7 +87,6 @@ const MiniDay = props => {
               ? props.text
               : `${props.text.slice(0, 140)}...`
             : props.text}
-          {}
         </div>
       </div>
     </div>
