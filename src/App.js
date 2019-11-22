@@ -4,6 +4,7 @@ import { userAutoLogin } from "./_actions/user.actions";
 import { Auth } from "./containers/Auth";
 import { Diary } from "./containers/Diary";
 import Universe from "./components/Universe";
+import NetworkDetector from "./hoc/NetworkDetector";
 import "./_styles/main.scss";
 
 class App extends React.Component {
@@ -15,7 +16,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <Universe />
-        {this.props.user.token ? <Diary /> : <Auth />}
+        <NetworkDetector>
+          {this.props.user.token ? <Diary /> : <Auth />}
+        </NetworkDetector>
       </div>
     );
   }
