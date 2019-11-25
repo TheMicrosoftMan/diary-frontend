@@ -143,7 +143,7 @@ class Diary extends React.Component {
   handleDayClick = day => {
     this.setState({
       selectedDate: moment(day).startOf("date"),
-      showSidebar: !window.innerWidth >= 740 && false
+      showSidebar: window.innerWidth >= 740 ? true : false
     });
   };
 
@@ -161,7 +161,7 @@ class Diary extends React.Component {
       {
         selectedDate: moment().startOf("date"),
         monthSelected: moment().startOf("date"),
-        showSidebar: !window.innerWidth >= 740 && false
+        showSidebar: window.innerWidth >= 740 ? true : false
       },
       this.findByRange
     );
@@ -472,7 +472,9 @@ class Diary extends React.Component {
                                           selectedDate: newDate,
                                           monthSelected: newDate,
                                           showSidebar:
-                                            !window.innerWidth >= 740 && false
+                                            window.innerWidth >= 740
+                                              ? true
+                                              : false
                                         },
                                         () => this.findByRange()
                                       );
