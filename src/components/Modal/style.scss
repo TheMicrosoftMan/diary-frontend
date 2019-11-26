@@ -24,6 +24,7 @@
     height: max-content;
     margin: 30px 0 20px;
     @include acrylic-background-white;
+    background: #ccc;
     z-index: 1;
 
     &_container {

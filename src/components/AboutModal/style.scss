@@ -20,7 +20,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 3rem;
+
+      .icon {
+        max-width: 80%;
+      }
     }
 
     &__text {

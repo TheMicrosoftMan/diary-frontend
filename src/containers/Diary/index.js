@@ -142,7 +142,8 @@ class Diary extends React.Component {
 
   handleDayClick = day => {
     this.setState({
-      selectedDate: moment(day).startOf("date")
+      selectedDate: moment(day).startOf("date"),
+      showSidebar: window.innerWidth >= 740 ? true : false
     });
   };
 
@@ -159,7 +160,8 @@ class Diary extends React.Component {
     this.setState(
       {
         selectedDate: moment().startOf("date"),
-        monthSelected: moment().startOf("date")
+        monthSelected: moment().startOf("date"),
+        showSidebar: window.innerWidth >= 740 ? true : false
       },
       this.findByRange
     );
@@ -280,6 +282,16 @@ class Diary extends React.Component {
           <div className="wrapper">
             <div className="diary-container">
               <div className="diary-container__title-container">
+                <div
+                  className="diary-container__toogler"
+                  onClick={() =>
+                    this.setState({
+                      showSidebar: !this.state.showSidebar
+                    })
+                  }
+                >
+                  <i className="mi mi-GlobalNavigationButton"></i>
+                </div>
                 <div className="diary-container__title-container_title">
                   {this.props.user.user.name}
                 </div>
@@ -358,23 +370,11 @@ class Diary extends React.Component {
                   />
                 </div>
               </div>
-
-              <div
-                className="diary-container__toogler"
-                onClick={() =>
-                  this.setState({
-                    showSidebar: !this.state.showSidebar
-                  })
-                }
-              >
-                <i className="mi mi-GlobalNavigationButton"></i>
-              </div>
-
               <div className="diary-container__main">
                 <CSSTransition
                   in={this.state.showSidebar}
                   timeout={400}
-                  classNames="diary-container__main_calendar-container-animation"
+                  classNames="diary-container__main_calendar-container-sidebar-animation"
                   unmountOnExit
                 >
                   <div className="diary-container__main_calendar-container">
@@ -470,7 +470,11 @@ class Diary extends React.Component {
                                       this.setState(
                                         {
                                           selectedDate: newDate,
-                                          monthSelected: newDate
+                                          monthSelected: newDate,
+                                          showSidebar:
+                                            window.innerWidth >= 740
+                                              ? true
+                                              : false
                                         },
                                         () => this.findByRange()
                                       );
