@@ -36,6 +36,13 @@ class Auth extends React.Component {
     );
   };
 
+  enterHandler = (e, f) => {
+    console.log(e.keyCode);
+    if (e.keyCode === 13) {
+      f();
+    }
+  };
+
   render() {
     return (
       <div className="auth">
@@ -61,6 +68,7 @@ class Auth extends React.Component {
                           placeholder="yourname@example.com"
                           type="email"
                           ref={this.logEmail}
+                          onKeyDown={e => this.enterHandler(e, this.login)}
                         />
                       </label>
                       <label className="auth-form__label">
@@ -70,6 +78,7 @@ class Auth extends React.Component {
                           placeholder="********"
                           type="password"
                           ref={this.logPassword}
+                          onKeyDown={e => this.enterHandler(e, this.login)}
                         />
                       </label>
                       <button
@@ -91,6 +100,7 @@ class Auth extends React.Component {
                           placeholder="Your name"
                           type="text"
                           ref={this.regName}
+                          onKeyDown={e => this.enterHandler(e, this.register)}
                         />
                       </label>
                       <label className="auth-form__label">
@@ -100,6 +110,7 @@ class Auth extends React.Component {
                           placeholder="yourname@example.com"
                           type="email"
                           ref={this.regEmail}
+                          onKeyDown={e => this.enterHandler(e, this.register)}
                         />
                       </label>
                       <label className="auth-form__label">
@@ -109,6 +120,7 @@ class Auth extends React.Component {
                           placeholder="********"
                           type="password"
                           ref={this.regPassword}
+                          onKeyDown={e => this.enterHandler(e, this.register)}
                         />
                       </label>
                       <button

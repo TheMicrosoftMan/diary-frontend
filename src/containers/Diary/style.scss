@@ -98,6 +98,7 @@
 
             &_item {
               @include acrylic-background-white;
+              background: #ccc;
               margin-right: 15px;
               max-width: 100%;
               width: max-content;
@@ -164,23 +165,21 @@
 
         &-animation-enter {
           opacity: 0;
-          margin-top: -465px;
         }
 
         &-animation-enter-active {
           opacity: 1;
-          margin-top: 0;
+
           transition: all ease 0.4s;
         }
 
         &-animation-exit {
           opacity: 1;
-          margin-top: 0;
         }
 
         &-animation-exit-active {
           opacity: 0;
-          margin-top: -465px;
+
           transition: all ease 0.4s;
         }
 
@@ -246,6 +245,7 @@
     &_calendar-container {
       position: absolute;
       @include acrylic-background-white;
+      background: #ccc;
       box-sizing: border-box;
       padding: 10px;
       max-width: 100%;
@@ -267,6 +267,7 @@
     align-items: center;
     justify-content: center;
     @include acrylic-background-white;
+    background: #ccc;
     font-size: 1.25rem;
     color: #000;
   }
