@@ -1,13 +1,15 @@
 import React from "react";
 import Modal from "../Modal";
 
+import { ReactComponent as Icon } from "../../images/icon.svg";
+
 const AboutModal = ({ title, show, hide }) => {
   return (
     <Modal title={title} show={show} hide={hide}>
       <div className="aboutModal">
         <div className="title">
           <div className="title__icon">
-            <i className="mi mi-Contact"></i>
+            <Icon />
           </div>
           <span className="title__text">My React Diary</span>
         </div>
@@ -30,7 +32,7 @@ const AboutModal = ({ title, show, hide }) => {
           </p>
         </div>
         <div className="footer">
-          <div className="version">v. 0.9.5</div>
+          <div className="version">v. 0.9.6</div>
         </div>
       </div>
     </Modal>

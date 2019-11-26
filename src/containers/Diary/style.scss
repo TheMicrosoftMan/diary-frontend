@@ -13,7 +13,6 @@
   margin: 10px;
   width: 100%;
   max-width: 700px;
-  overflow: auto;
   @include acrylic-background-white;
   @include startWindowOpacity;
   opacity: 0;
@@ -32,8 +31,10 @@
     scroll-behavior: smooth;
 
     &__toogler {
-      width: 50px;
-      height: 50px;
+      $size: 40px;
+      width: 100%;
+      max-width: $size;
+      height: $size;
       display: none;
       cursor: pointer;
     }
@@ -50,10 +51,16 @@
         font-size: rem(24px);
         line-height: rem(28px);
         color: #323130;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 600px;
+        height: 1.2em;
+        white-space: nowrap;
       }
 
       &_options {
         display: flex;
+        align-items: center;
         justify-content: flex-end;
 
         .ms-Button {
@@ -91,6 +98,7 @@
 
             &_item {
               @include acrylic-background-white;
+              background: #ccc;
               margin-right: 15px;
               max-width: 100%;
               width: max-content;
@@ -157,23 +165,39 @@
 
         &-animation-enter {
           opacity: 0;
-          margin-top: -465px;
         }
 
         &-animation-enter-active {
           opacity: 1;
-          margin-top: 0;
+
           transition: all ease 0.4s;
         }
 
         &-animation-exit {
           opacity: 1;
-          margin-top: 0;
         }
 
         &-animation-exit-active {
           opacity: 0;
-          margin-top: -465px;
+
+          transition: all ease 0.4s;
+        }
+
+        &-sidebar-animation-enter {
+          margin-left: -100vw;
+        }
+
+        &-sidebar-animation-enter-active {
+          margin-left: 0;
+          transition: all ease 0.4s;
+        }
+
+        &-sidebar-animation-exit {
+          margin-left: 0;
+        }
+
+        &-sidebar-animation-exit-active {
+          margin-left: -100vw;
           transition: all ease 0.4s;
         }
       }
@@ -210,16 +234,23 @@
     align-items: flex-start;
   }
 
+  .diary-container__title-container_title {
+    margin-left: 20px;
+  }
+
   .diary-container__main {
     flex-direction: column;
     position: relative;
 
     &_calendar-container {
+      position: absolute;
       @include acrylic-background-white;
+      background: #ccc;
       box-sizing: border-box;
       padding: 10px;
       max-width: 100%;
       margin-bottom: 15px;
+      z-index: 2;
     }
 
     &_new-day-container {
@@ -236,9 +267,9 @@
     align-items: center;
     justify-content: center;
     @include acrylic-background-white;
+    background: #ccc;
     font-size: 1.25rem;
     color: #000;
-    margin-bottom: 15px;
   }
 }
 
@@ -247,13 +278,10 @@
     margin: 20px 7px;
 
     &__title-container {
-      flex-direction: column;
-
       &_title {
         text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+        width: 200px;
+        margin-left: 0;
       }
 
       &_logout {
@@ -284,6 +312,10 @@
 
     .diary-container {
       margin: 10px 0;
+
+      &__title-container_title {
+        width: 140px;
+      }
 
       .diary-container__main_calendar-container {
         padding: 10px 0;
